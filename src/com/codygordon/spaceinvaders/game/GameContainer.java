@@ -1,0 +1,68 @@
+package com.codygordon.spaceinvaders.game;
+
+import com.codygordon.spaceinvaders.builders.GameLoopBuilder;
+import com.codygordon.spaceinvaders.controllers.GameController;
+import com.codygordon.spaceinvaders.ui.GameFrame;
+import com.codygordon.spaceinvaders.ui.screens.GameScreen;
+import com.codygordon.spaceinvaders.ui.screens.HomeScreen;
+
+public class GameContainer {
+
+	/** Game Loop Settings **/
+	public static final double FPS = 60;
+	public static final double UPS = 1;
+	public static final boolean RENDER_TIME = false;
+	
+	private static GameContainer instance;
+	
+	/** Reference Variables **/
+	private GameUpdater updater;
+	private GameLoop loop;
+	private GameFrame mainFrame;
+	private GameController controller;
+	
+	public GameContainer() {
+		instance = this;
+		initFrame();
+		initLoop();
+		updater = new GameUpdater();
+	}
+	
+	public static GameContainer getInstance() {
+		return instance;
+	}
+	
+	/** Init Methods **/
+	private void initFrame() {
+		mainFrame = new GameFrame();
+		mainFrame.showScreen(new HomeScreen());
+	}
+	
+	private void initLoop() {
+		GameLoopBuilder builder = new GameLoopBuilder();
+		loop = builder.setRenderFrames(RENDER_TIME)
+				.setFps(FPS)
+				.setUps(UPS)
+				.build();
+		loop.run();
+	}
+	
+	public void startGame() {
+		GameScreen screen = new GameScreen();
+		controller = new GameController(screen);
+		mainFrame.showScreen(screen);
+	}
+	
+	/** Getters **/
+	public GameUpdater getUpdater() {
+		return this.updater;
+	}
+	
+	public GameFrame getMainFrame() {
+		return this.mainFrame;
+	}
+	
+	public GameController getController() {
+		return this.controller;
+	}
+}
