@@ -2,6 +2,7 @@ package com.codygordon.spaceinvaders.game;
 
 import com.codygordon.spaceinvaders.builders.GameLoopBuilder;
 import com.codygordon.spaceinvaders.controllers.GameController;
+import com.codygordon.spaceinvaders.difficulty.GameDifficultyManager;
 import com.codygordon.spaceinvaders.ui.GameFrame;
 import com.codygordon.spaceinvaders.ui.screens.GameScreen;
 import com.codygordon.spaceinvaders.ui.screens.HomeScreen;
@@ -20,6 +21,7 @@ public class GameContainer {
 	private GameLoop loop;
 	private GameFrame mainFrame;
 	private GameController controller;
+	private GameDifficultyManager difficultyManager;
 	
 	public GameContainer() {
 		instance = this;
@@ -48,6 +50,7 @@ public class GameContainer {
 	}
 	
 	public void startGame() {
+		System.out.println("Starting game...");
 		GameScreen screen = new GameScreen();
 		controller = new GameController(screen);
 		mainFrame.showScreen(screen);
@@ -64,5 +67,9 @@ public class GameContainer {
 	
 	public GameController getController() {
 		return this.controller;
+	}
+
+	public GameDifficultyManager getDifficultyManager() {
+		return difficultyManager;
 	}
 }
