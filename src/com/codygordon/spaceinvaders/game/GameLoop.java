@@ -60,7 +60,7 @@ public class GameLoop implements Runnable {
 	}
 	
 	public void updateFrames() {
-		GameContainer.getInstance().getUpdater().update();
+		if(GameContainer.getInstance().getUpdater() != null) GameContainer.getInstance().getUpdater().update();
 	}
 	
 	public Thread getThread() {

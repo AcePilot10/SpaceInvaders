@@ -6,15 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.codygordon.spaceinvaders.gameobjects.Player;
+import com.codygordon.spaceinvaders.input.FrameKeyListener;
 
 public class GameFrame extends JFrame {
 
 	private static final long serialVersionUID = -8215680680292053450L;
 	
 	private JPanel contentPane;
-	
-	private Player player;
 	
 	public GameFrame() {
 		System.out.println("Creating game frame...");
@@ -26,6 +24,8 @@ public class GameFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		addKeyListener(new FrameKeyListener());
 		
 		setVisible(true);
 	}

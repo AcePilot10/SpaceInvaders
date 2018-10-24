@@ -1,13 +1,13 @@
 package com.codygordon.spaceinvaders.input;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import com.codygordon.spaceinvaders.controllers.GameController;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.Player;
+import com.codygordon.spaceinvaders.interfaces.KeyEventListener;
 
-public class GameKeyListener extends KeyAdapter {
+public class GameKeyListener implements KeyEventListener {
 
 	private GameController controller;
 	
@@ -15,11 +15,10 @@ public class GameKeyListener extends KeyAdapter {
 		controller = GameContainer.getInstance().getController();
 		System.out.println("Key listener initialized...");
 	}
-	
+
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void KeyPressed(KeyEvent e) {
 		System.out.print("Key event detected");
-		super.keyPressed(e);
 		int key = e.getKeyCode();
 		if(key == KeyEvent.VK_LEFT) {
 			controller.getPlayer();

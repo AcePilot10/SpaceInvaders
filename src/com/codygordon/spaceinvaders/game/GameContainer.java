@@ -25,9 +25,9 @@ public class GameContainer {
 	
 	public GameContainer() {
 		instance = this;
+		updater = new GameUpdater();
 		initFrame();
 		initLoop();
-		updater = new GameUpdater();
 	}
 	
 	public static GameContainer getInstance() {
