@@ -7,11 +7,13 @@ public abstract class GameObject {
 	
 	protected Point location;
 	
-	public void update(Graphics g) {
-		
-	}
+	public void update(Graphics g) { }
 	
 	public Point getLocation() {
 		return this.location;
+	}
+	
+	public void setLocation(Point location) {
+		this.location= location;
 	}
 }

@@ -33,7 +33,7 @@ public class GameFrame extends JFrame {
 	public void showScreen(JPanel panel) {
 		getContentPane().removeAll();
 		getContentPane().add(panel);
-		getContentPane().repaint();
 		getContentPane().revalidate();
+		requestFocus();
 	}
 }

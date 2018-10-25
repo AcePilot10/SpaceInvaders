@@ -19,7 +19,6 @@ public class FrameKeyListener extends KeyAdapter {
 	
 	@Override
 	public void keyPressed(KeyEvent key) {
-		System.out.println("Detected key pressed");
 		for(KeyEventListener listener : listeners) {
 			listener.KeyPressed(key);
 		}
