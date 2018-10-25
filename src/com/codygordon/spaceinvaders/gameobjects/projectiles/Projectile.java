@@ -22,7 +22,6 @@ public class Projectile extends PhysicsObject {
 	
 	@Override
 	public void onCollision(GameObject obj) {
-		System.out.println("Detected collision with " + obj.getClass().getName());
 		if(obj instanceof Barrier) {
 			explode();
 		}
@@ -38,8 +37,7 @@ public class Projectile extends PhysicsObject {
 				50);
 	}
 	
-	public void explode() {
-		System.out.println("Projectile exploding");
+	public synchronized void explode() {
 		GameContainer.getInstance().getController().destroyGameObject(this);
 	}
 }

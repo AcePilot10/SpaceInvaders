@@ -56,7 +56,7 @@ public class GameLoop implements Runnable {
 	}
 	
 	public void tick() {
-		GameContainer.getInstance().getController().updatePhysics();
+		GameContainer.getInstance().getController().update();
 	}
 	
 	public void updateFrames() {

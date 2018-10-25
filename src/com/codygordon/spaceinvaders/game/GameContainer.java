@@ -11,7 +11,7 @@ public class GameContainer {
 
 	/** Game Loop Settings **/
 	public static final double FPS = 60;
-	public static final double UPS = 1;
+	public static final double UPS = 60;
 	public static final boolean RENDER_TIME = false;
 	
 	private static GameContainer instance;

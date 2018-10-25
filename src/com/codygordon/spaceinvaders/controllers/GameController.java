@@ -2,6 +2,8 @@ package com.codygordon.spaceinvaders.controllers;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
@@ -15,13 +17,17 @@ import com.codygordon.spaceinvaders.ui.screens.GameScreen;
 public class GameController {
 
 	public static final int PROJECTILE_SPEED = 10;
+	public static final long SHOOT_DELAY = 800;
 	
 	private Player player;
 	private GameScreen view;
 	private GameKeyListener listener;
 	
 	private ArrayList<GameObject> physicsObjects = new ArrayList<GameObject>();
-		
+	private ArrayList<GameObject> objectsToDestroy = new ArrayList<GameObject>();	
+	
+	private boolean canShoot = true;
+	
 	public GameController(GameScreen screen) {
 		this.view = screen;
 		
@@ -44,20 +50,45 @@ public class GameController {
 	}
 	
 	public void shoot() {
-		int spawnX = (int)player.getLocation().getX() + (25 / 2);
-		int spawnY = (int)player.getLocation().getY() - (50 / 2) - 5;
-		Projectile projectile = new Projectile(PROJECTILE_SPEED);
-		projectile.setLocation(new Point(spawnX, spawnY));
-		view.getObjectsToDraw().add(projectile);
-		initGameObject(projectile);
+		if(canShoot) {
+			int spawnX = (int)player.getLocation().getX() + (25 / 2);
+			int spawnY = (int)player.getLocation().getY() - (50 / 2) - 5;
+			Projectile projectile = new Projectile(PROJECTILE_SPEED);
+			projectile.setLocation(new Point(spawnX, spawnY));
+			view.getObjectsToDraw().add(projectile);
+			initGameObject(projectile);
+			startShootDelay();
+		} 
 	}
 	
-	public void updatePhysics() {
+	private void startShootDelay() {
+		canShoot = false;
+		new Timer().schedule(new TimerTask() {
+			@Override
+			public void run() {
+				canShoot = true;
+			}
+		}, SHOOT_DELAY);
+	}
+	
+	public void update() {
+		updatePhysics();
+		destroyGameObjects();
+	}
+	
+	private void destroyGameObjects() {
+		physicsObjects.removeAll(objectsToDestroy);
+		view.getObjectsToDraw().removeAll(objectsToDestroy);
+		objectsToDestroy.clear();
+	}
+	
+	private void updatePhysics() {
 		for(GameObject obj : physicsObjects) {
 			for(GameObject otherObj : physicsObjects) {
-				if(otherObj == obj) return;
-				if(obj.getCollider().intersects(otherObj.getCollider())) {
-					obj.onCollision(otherObj);
+				if(otherObj != obj) { 
+					if(obj.getCollider().intersects(otherObj.getCollider())) {
+						obj.onCollision(otherObj);
+					}
 				}
 			}
 		}
@@ -69,8 +100,7 @@ public class GameController {
 	}
 	
 	public void destroyGameObject(GameObject obj) {
-		physicsObjects.remove(physicsObjects.indexOf(obj));
-		view.getObjectsToDraw().remove(view.getObjectsToDraw().indexOf(obj));
+		objectsToDestroy.add(obj);
 	}
 	
 	public Player getPlayer() {
