@@ -8,7 +8,9 @@ import java.awt.Rectangle;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.PhysicsObject;
+import com.codygordon.spaceinvaders.gameobjects.ambience.Explosion;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 
 public class Projectile extends PhysicsObject {
 
@@ -24,6 +26,10 @@ public class Projectile extends PhysicsObject {
 	public void onCollision(GameObject obj) {
 		if(obj instanceof Barrier) {
 			explode();
+		} else if(obj instanceof Enemy) {
+			Enemy enemy = (Enemy)obj;
+			enemy.die();
+			explode();
 		}
 	}
 	
@@ -37,7 +43,14 @@ public class Projectile extends PhysicsObject {
 				50);
 	}
 	
-	public synchronized void explode() {
+	public void explode() {
+		Explosion explosion = new Explosion(750, 1, 5, 5);
+		Point location = getLocation();
+		location.x += collider.width / 2;
+		explosion.setLocation(location);
+		GameContainer.getInstance().getController().initGameObject(explosion);
+		explosion.start();
+				
 		GameContainer.getInstance().getController().destroyGameObject(this);
 	}
 }

@@ -2,12 +2,16 @@ package com.codygordon.spaceinvaders.controllers;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.codygordon.spaceinvaders.builders.EnemyWaveBuilder;
+import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
 import com.codygordon.spaceinvaders.gameobjects.projectiles.Projectile;
 import com.codygordon.spaceinvaders.input.FrameKeyListener;
@@ -26,6 +30,8 @@ public class GameController {
 	private ArrayList<GameObject> physicsObjects = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objectsToDestroy = new ArrayList<GameObject>();	
 	
+	private EnemyWave currentWave;
+	
 	private boolean canShoot = true;
 	
 	public GameController(GameScreen screen) {
@@ -36,8 +42,22 @@ public class GameController {
 		
 		addBarriers();
 		
+		Enemy testEnemy1 = new Enemy();
+		EnemyWaveBuilder waveBuilder = new EnemyWaveBuilder();
+		EnemyWave wave = waveBuilder.setRows(1)
+						.addEnemy(1, testEnemy1)
+						.build();
+		spawnEnemyWave(wave);
+		
 		listener = new GameKeyListener();
 		FrameKeyListener.getInstance().addListener(listener);
+	}
+	
+	public void spawnEnemyWave(EnemyWave wave) {
+		currentWave = wave;
+		for(GameObject enemy : currentWave.getEnemeis().values()) {
+			initGameObject(enemy);
+		}
 	}
 	
 	private void addBarriers() {
@@ -83,15 +103,17 @@ public class GameController {
 	}
 	
 	private void updatePhysics() {
-		for(GameObject obj : physicsObjects) {
-			for(GameObject otherObj : physicsObjects) {
-				if(otherObj != obj) { 
-					if(obj.getCollider().intersects(otherObj.getCollider())) {
-						obj.onCollision(otherObj);
+		try {
+			for(GameObject obj : physicsObjects) {
+				for(GameObject otherObj : physicsObjects) {
+					if(otherObj != obj) { 
+						if(obj.getCollider().intersects(otherObj.getCollider())) {
+							obj.onCollision(otherObj);
+						}
 					}
 				}
 			}
-		}
+		} catch(ConcurrentModificationException e) { }
 	}
 	
 	public void initGameObject(GameObject obj) {
