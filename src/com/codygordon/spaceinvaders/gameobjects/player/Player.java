@@ -11,17 +11,16 @@ import com.codygordon.spaceinvaders.gameobjects.GameObject;
 public class Player extends GameObject {
 
 	private int speed;
-	private Rectangle playerRect;
 
 	public static final int MOVE_LEFT = 1;
 	public static final int MOVE_RIGHT = 2;
 	
 	public Player() {
 		location = new Point();
-		playerRect = new Rectangle();
-		playerRect.setBounds(0, 0, 50, 50);
+		collider = new Rectangle();
+		collider.setBounds(0, 0, 50, 50);
 		int height = GameContainer.getInstance().getMainFrame().getHeight();
-		location.y = height - (int)(playerRect.getHeight() * 2);
+		location.y = height - (int)(collider.getHeight() * 2);
 		speed = 5;
 	}
 	
@@ -30,8 +29,8 @@ public class Player extends GameObject {
 		g.setColor(Color.RED);
 		g.fillRect(location.x,
 				location.y,
-				(int)playerRect.getWidth(),
-				(int)playerRect.getHeight());
+				(int)collider.getWidth(),
+				(int)collider.getHeight());
 	}
 
 	public void move(int direction) {

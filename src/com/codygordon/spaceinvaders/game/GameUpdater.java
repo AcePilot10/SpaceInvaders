@@ -7,6 +7,8 @@ import com.codygordon.spaceinvaders.interfaces.GameObserver;
 
 public class GameUpdater {
 	
+	//Updates UI
+	
 	private List<GameObserver> observers;
 	
 	public GameUpdater() {

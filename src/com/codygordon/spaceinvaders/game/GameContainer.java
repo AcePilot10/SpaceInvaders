@@ -27,7 +27,6 @@ public class GameContainer {
 		instance = this;
 		updater = new GameUpdater();
 		initFrame();
-		initLoop();
 	}
 	
 	public static GameContainer getInstance() {
@@ -54,6 +53,7 @@ public class GameContainer {
 		GameScreen screen = new GameScreen();
 		controller = new GameController(screen);
 		mainFrame.showScreen(screen);
+		initLoop();
 	}
 	
 	/** Getters **/
