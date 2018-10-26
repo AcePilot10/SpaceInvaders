@@ -121,4 +121,8 @@ public class GameController {
 	public Player getPlayer() {
 		return this.player;
 	}
+	
+	public EnemyWave getCurrentEnemyWave() {
+		return this.currentWave;
+	}
 }

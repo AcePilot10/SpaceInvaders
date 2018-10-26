@@ -34,7 +34,7 @@ public class GameContainer {
 		return instance;
 	}
 	
-	/** Init Methods **/
+	/** Init Methods **/	
 	private void initFrame() {
 		mainFrame = new GameFrame();
 		mainFrame.showScreen(new HomeScreen());
@@ -56,8 +56,9 @@ public class GameContainer {
 		mainFrame.showScreen(screen);
 		initLoop();
 		
-		EnemyWave wave = new EnemyWave(2, 10);
+		EnemyWave wave = new EnemyWave(1, 1);
 		controller.spawnEnemyWave(wave);
+		controller.createPlayer();
 	}
 	
 	/** Getters **/

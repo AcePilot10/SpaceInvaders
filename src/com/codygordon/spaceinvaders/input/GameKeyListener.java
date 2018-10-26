@@ -2,6 +2,7 @@ package com.codygordon.spaceinvaders.input;
 
 import java.awt.event.KeyEvent;
 
+import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
 import com.codygordon.spaceinvaders.interfaces.KeyEventListener;
@@ -17,6 +18,8 @@ public class GameKeyListener implements KeyEventListener {
 			 GameContainer.getInstance().getController().getPlayer().move(Player.MOVE_RIGHT); 
 		} else if(key == KeyEvent.VK_SPACE) {
 			GameContainer.getInstance().getController().shoot();
+		} else if(key == KeyEvent.VK_O) {
+			GameContainer.getInstance().getController().getCurrentEnemyWave().moveHorizontal();
 		}
 	}
 }
