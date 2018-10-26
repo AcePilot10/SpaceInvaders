@@ -18,7 +18,7 @@ public class EnemyWave {
 	private int rows;
 	private int enemiesPerRow;
 	
-	private int horizontalDirection = LEFT;
+	private int horizontalDirection = RIGHT;
 
 	private Enemy[][] enemies;
 	
@@ -64,9 +64,6 @@ public class EnemyWave {
 			for(int enemyColumn = 1; enemyColumn <= enemiesPerRow; enemyColumn++) {
 				Enemy enemy = enemies[row - 1][enemyColumn - 1];
 				enemy.setLocation(new Point(enemy.getLocation().x + deltaX, enemy.getLocation().y)); 
-				if(horizontalDirection == RIGHT) {
-					System.out.println("Moved right");
-				}
 			}
 		}
 		handleDirectionChange();
@@ -90,9 +87,9 @@ public class EnemyWave {
 					}
 				}
 			}
-		} else {
+		} else if(horizontalDirection == RIGHT) {
 			for(int row = 1; row <= rows; rows++) {
-				for(int column = enemiesPerRow; column <= 1; column--) {
+				for(int column = enemiesPerRow; column >= 1; column--) {
 					Enemy enemy = enemies[row - 1][column - 1];
 					if(enemy != null) {
 						
