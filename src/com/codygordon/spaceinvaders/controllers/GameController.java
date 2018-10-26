@@ -37,14 +37,8 @@ public class GameController {
 	public GameController(GameScreen screen) {
 		this.view = screen;
 		
-		player = new Player();
-		initGameObject(player);
-		
 		addBarriers();
-		
-		EnemyWave wave = new EnemyWave(1, 1);
-		spawnEnemyWave(wave);
-		
+				
 		listener = new GameKeyListener();
 		FrameKeyListener.getInstance().addListener(listener);
 	}
@@ -52,6 +46,11 @@ public class GameController {
 	public void spawnEnemyWave(EnemyWave wave) {
 		this.currentWave = wave;
 		wave.createEnemies();
+	}
+	
+	public void createPlayer() {
+		player = new Player();
+		initGameObject(player);
 	}
 	
 	private void addBarriers() {

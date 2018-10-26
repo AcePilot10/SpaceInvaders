@@ -17,7 +17,6 @@ public class EnemyWaveBuilder {
 	}
 	
 	public EnemyWaveBuilder addEnemy(int row, Enemy enemy) {
-		wave.getEnemeis().put(row, enemy);
 		return this;
 	}
 	
