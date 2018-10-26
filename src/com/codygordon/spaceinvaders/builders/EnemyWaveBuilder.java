@@ -8,7 +8,7 @@ public class EnemyWaveBuilder {
 	private EnemyWave wave;
 	
 	public EnemyWaveBuilder() {
-		wave = new EnemyWave();
+		//wave = new EnemyWave();
 	}
 	
 	public EnemyWaveBuilder setRows(int rows) {

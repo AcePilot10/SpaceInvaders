@@ -42,11 +42,7 @@ public class GameController {
 		
 		addBarriers();
 		
-		Enemy testEnemy1 = new Enemy();
-		EnemyWaveBuilder waveBuilder = new EnemyWaveBuilder();
-		EnemyWave wave = waveBuilder.setRows(1)
-						.addEnemy(1, testEnemy1)
-						.build();
+		EnemyWave wave = new EnemyWave(1, 1);
 		spawnEnemyWave(wave);
 		
 		listener = new GameKeyListener();
@@ -54,10 +50,8 @@ public class GameController {
 	}
 	
 	public void spawnEnemyWave(EnemyWave wave) {
-		currentWave = wave;
-		for(GameObject enemy : currentWave.getEnemeis().values()) {
-			initGameObject(enemy);
-		}
+		this.currentWave = wave;
+		wave.createEnemies();
 	}
 	
 	private void addBarriers() {
