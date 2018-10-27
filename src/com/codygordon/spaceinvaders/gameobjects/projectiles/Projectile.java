@@ -1,6 +1,5 @@
 package com.codygordon.spaceinvaders.gameobjects.projectiles;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,8 +17,8 @@ public class Projectile extends PhysicsObject {
 		setSpeed(speed);
 		setVelocity(new Point(0, 1));
 		collider = new Rectangle();
-		collider.width = 25;
-		collider.height = 50;
+		collider.width = 5;
+		collider.height = 15;
 	}
 	
 	@Override
@@ -36,11 +35,10 @@ public class Projectile extends PhysicsObject {
 	@Override
 	public void update(Graphics g) {
 		super.update(g);
-		g.setColor(Color.BLUE);
 		g.fillRect(location.x,
 				location.y,
-				25, 
-				50);
+				collider.width, 
+				collider.height);
 	}
 	
 	public void explode() {
@@ -50,7 +48,6 @@ public class Projectile extends PhysicsObject {
 		explosion.setLocation(location);
 		GameContainer.getInstance().getController().initGameObject(explosion);
 		explosion.start();
-				
 		GameContainer.getInstance().getController().destroyGameObject(this);
 	}
 }

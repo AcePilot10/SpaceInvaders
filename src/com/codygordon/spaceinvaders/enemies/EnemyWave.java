@@ -5,6 +5,7 @@ import java.awt.Point;
 import com.codygordon.spaceinvaders.controllers.GameController;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
+import com.codygordon.spaceinvaders.gameobjects.enemies.EnemyShooter;
 import com.codygordon.spaceinvaders.util.ScreenUtil;
 
 public class EnemyWave {
@@ -15,9 +16,11 @@ public class EnemyWave {
 	public static final int Y_PADDING = 50;
 	public static final int X_PADDING = 50;
 	
+	public long moveHorizontalDelay;
+	
 	private int rows;
 	private int enemiesPerRow;
-	
+	private Thread moveHorizontalThread;
 	private int horizontalDirection = RIGHT;
 
 	private Enemy[][] enemies;
@@ -28,29 +31,42 @@ public class EnemyWave {
 		enemies = new Enemy[rows][enemiesPerRow];
 	}
 	
-	public int getRows() {
-		return this.rows;
-	}
-	
-	public void setRows(int rows) {
-		this.rows = rows;
+	public void init() {
+		createEnemies();
+		beginMoving();
 	}
 
-	public void createEnemies() {
+	private void createEnemies() {
 		for(int row = 1; row <= rows; row++) {
 			for(int col = 1; col <= enemiesPerRow; col++) {
 				int y = Y_PADDING * row; 
 				int x = X_PADDING * col;
-				Enemy enemy = new Enemy();
+				EnemyShooter enemy = new EnemyShooter();
+				enemy.setShootChance(1f);
+				enemy.setShootDelay(1500);
 				enemy.setLocation(new Point(x, y));
 				enemies[row-1][col-1] = enemy;
 				GameController controller = GameContainer.getInstance().getController();
 				controller.initGameObject(enemy);
+				enemy.beginShootingTimer();
 			}
 		}
 	}
-
-	public void moveHorizontal() {
+		
+	private void beginMoving() {
+		IEnemyMove move = new IEnemyMove() {
+			@Override
+			public void move() {
+				moveHorizontal();
+			}
+		};
+		MoveRunnable runnable = new MoveRunnable(move, moveHorizontalDelay);
+		moveHorizontalThread = new Thread(runnable);
+		moveHorizontalThread.setName("Move Horizontal Thread");
+		moveHorizontalThread.start();
+	}
+	
+	private void moveHorizontal() {
 		int deltaX = 0;
 		switch(horizontalDirection) {
 		case LEFT:
@@ -71,49 +87,63 @@ public class EnemyWave {
 	
 	private void handleDirectionChange() {
 		if(horizontalDirection == LEFT) {
+			outerloop: 
 			for(int row = 1; row <= rows; row++) {
 				for(int column = 1; column <= enemiesPerRow; column++) {
 					Enemy enemy = enemies[row - 1][column - 1];
-					if(enemy != null) {
+					if(enemyIsAlive(enemy)) {
 						
 						Point enemyLocation = enemy.getLocation();
-						int x = enemyLocation.x - X_PADDING;
+						int x = enemyLocation.x - X_PADDING / 2;
 						int y = enemyLocation.y;
 						
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
 							horizontalDirection = RIGHT;
+							moveDown();
 						}
-						break;
+						break outerloop;
 					}
 				}
 			}
 		} else if(horizontalDirection == RIGHT) {
+			outerloop: 
 			for(int row = 1; row <= rows; rows++) {
 				for(int column = enemiesPerRow; column >= 1; column--) {
 					Enemy enemy = enemies[row - 1][column - 1];
-					if(enemy != null) {
+					if(enemyIsAlive(enemy)) {
 						
 						Point enemyLocation = enemy.getLocation();
-						int x = enemyLocation.x + X_PADDING;
+						int x = enemyLocation.x + X_PADDING * 2;
 						int y = enemyLocation.y;
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
 							horizontalDirection = LEFT;
+							moveDown();
 						}
-						break;
+						break outerloop;
 					}
 				}
 			}
 		}
-		
-		System.out.println("Next direction is: " + horizontalDirection);
 	}
 	
-	public void moveDown() {
+	private void moveDown() {
 		for(int row = 1; row <= rows; row++) {
 			for(int enemyColumn = 1; enemyColumn <= enemiesPerRow; enemyColumn++) {
 				Enemy enemy = enemies[row - 1][enemyColumn - 1];
 				enemy.setLocation(new Point(enemy.getLocation().x, enemy.getLocation().y + Y_PADDING)); 
 			}
 		}
+	}
+	
+	public int getRows() {
+		return this.rows;
+	}
+	
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	public boolean enemyIsAlive(Enemy enemy) {
+		return GameContainer.getInstance().getController().isAlive(enemy);
 	}
 }

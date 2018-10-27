@@ -10,6 +10,7 @@ import com.codygordon.spaceinvaders.gameobjects.GameObject;
 public class Enemy extends GameObject {
 	
 	public int destroyReward;
+	private boolean isAlive = true;
 	
 	public Enemy() {
 		super();
@@ -30,9 +31,14 @@ public class Enemy extends GameObject {
 	
 	public void die() {
 		GameContainer.getInstance().getController().destroyGameObject(this);
+		isAlive = false;
 	}
 	
 	public int getDestroyReward() {
 		return this.destroyReward;
+	}
+	
+	public boolean isAlive() {
+		return this.isAlive;
 	}
 }

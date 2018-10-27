@@ -3,7 +3,6 @@ package com.codygordon.spaceinvaders.game;
 import com.codygordon.spaceinvaders.builders.GameLoopBuilder;
 import com.codygordon.spaceinvaders.controllers.GameController;
 import com.codygordon.spaceinvaders.difficulty.GameDifficultyManager;
-import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.ui.GameFrame;
 import com.codygordon.spaceinvaders.ui.screens.GameScreen;
 import com.codygordon.spaceinvaders.ui.screens.HomeScreen;
@@ -55,10 +54,6 @@ public class GameContainer {
 		controller = new GameController(screen);
 		mainFrame.showScreen(screen);
 		initLoop();
-		
-		EnemyWave wave = new EnemyWave(1, 1);
-		controller.spawnEnemyWave(wave);
-		controller.createPlayer();
 	}
 	
 	/** Getters **/

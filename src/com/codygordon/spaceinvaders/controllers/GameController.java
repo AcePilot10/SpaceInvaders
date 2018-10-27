@@ -3,25 +3,18 @@ package com.codygordon.spaceinvaders.controllers;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import com.codygordon.spaceinvaders.builders.EnemyWaveBuilder;
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
 import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
-import com.codygordon.spaceinvaders.gameobjects.projectiles.Projectile;
 import com.codygordon.spaceinvaders.input.FrameKeyListener;
 import com.codygordon.spaceinvaders.input.GameKeyListener;
 import com.codygordon.spaceinvaders.ui.screens.GameScreen;
 
 public class GameController {
-
-	public static final int PROJECTILE_SPEED = 10;
-	public static final long SHOOT_DELAY = 800;
 	
 	private Player player;
 	private GameScreen view;
@@ -31,29 +24,26 @@ public class GameController {
 	private ArrayList<GameObject> objectsToDestroy = new ArrayList<GameObject>();	
 	
 	private EnemyWave currentWave;
-	
-	private boolean canShoot = true;
-	
-	public GameController(GameScreen screen) {
-		this.view = screen;
 		
-		addBarriers();
-				
+	public GameController(GameScreen screen) {
+		this.view = screen;				
 		listener = new GameKeyListener();
 		FrameKeyListener.getInstance().addListener(listener);
 	}
 	
 	public void spawnEnemyWave(EnemyWave wave) {
 		this.currentWave = wave;
-		wave.createEnemies();
+		this.currentWave.moveHorizontalDelay = 500;
+		this.currentWave.init();
 	}
 	
 	public void createPlayer() {
 		player = new Player();
+		player.setSpeed(15);
 		initGameObject(player);
 	}
 	
-	private void addBarriers() {
+	public void addBarriers() {
 		Barrier barrier1 = new Barrier();
 		int frameHeight = GameContainer.getInstance().getMainFrame().getHeight();
 		int barrierHeight = Barrier.HEIGHT;
@@ -63,25 +53,7 @@ public class GameController {
 	}
 	
 	public void shoot() {
-		if(canShoot) {
-			int spawnX = (int)player.getLocation().getX() + (25 / 2);
-			int spawnY = (int)player.getLocation().getY() - (50 / 2) - 5;
-			Projectile projectile = new Projectile(PROJECTILE_SPEED);
-			projectile.setLocation(new Point(spawnX, spawnY));
-			view.getObjectsToDraw().add(projectile);
-			initGameObject(projectile);
-			startShootDelay();
-		} 
-	}
-	
-	private void startShootDelay() {
-		canShoot = false;
-		new Timer().schedule(new TimerTask() {
-			@Override
-			public void run() {
-				canShoot = true;
-			}
-		}, SHOOT_DELAY);
+		player.shoot();
 	}
 	
 	public void update() {
@@ -116,6 +88,10 @@ public class GameController {
 	
 	public void destroyGameObject(GameObject obj) {
 		objectsToDestroy.add(obj);
+	}
+	
+	public boolean isAlive(Enemy enemy) {
+		return view.getObjectsToDraw().contains(enemy);
 	}
 	
 	public Player getPlayer() {
