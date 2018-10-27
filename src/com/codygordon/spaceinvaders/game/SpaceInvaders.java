@@ -7,8 +7,8 @@ public class SpaceInvaders extends GameContainer {
 	@Override
 	public void startGame() {
 		super.startGame();
-		EnemyWave wave = new EnemyWave(1, 1);
-		getController().spawnEnemyWave(wave);
+		EnemyWave wave = new EnemyWave(1, 3);
+		//getController().spawnEnemyWave(wave);
 		getController().addBarriers();
 		getController().createPlayer();
 	}	

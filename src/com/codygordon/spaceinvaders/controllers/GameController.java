@@ -20,6 +20,9 @@ public class GameController {
 	private GameScreen view;
 	private GameKeyListener listener;
 	
+	private int barrierWidth;
+	private int barrierHeight;
+	
 	private ArrayList<GameObject> physicsObjects = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objectsToDestroy = new ArrayList<GameObject>();	
 	
@@ -31,10 +34,8 @@ public class GameController {
 		FrameKeyListener.getInstance().addListener(listener);
 	}
 	
-	public void spawnEnemyWave(EnemyWave wave) {
-		this.currentWave = wave;
-		this.currentWave.moveHorizontalDelay = 500;
-		this.currentWave.init();
+	public void spawnNextWave() {
+		System.out.println("All enemies are dead!");
 	}
 	
 	public void createPlayer() {
@@ -61,7 +62,13 @@ public class GameController {
 		destroyGameObjects();
 	}
 	
-	private void destroyGameObjects() {
+	private void spawnEnemyWave(EnemyWave wave) {
+		this.currentWave = wave;
+		this.currentWave.moveHorizontalDelay = 500;
+		this.currentWave.init();
+	}
+	
+	private synchronized void destroyGameObjects() {
 		physicsObjects.removeAll(objectsToDestroy);
 		view.getObjectsToDraw().removeAll(objectsToDestroy);
 		objectsToDestroy.clear();
@@ -81,7 +88,7 @@ public class GameController {
 		} catch(ConcurrentModificationException e) { }
 	}
 	
-	public void initGameObject(GameObject obj) {
+	public synchronized  void initGameObject(GameObject obj) {
 		physicsObjects.add(obj);
 		view.getObjectsToDraw().add(obj);
 	}

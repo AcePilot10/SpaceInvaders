@@ -22,17 +22,6 @@ public class Projectile extends PhysicsObject {
 	}
 	
 	@Override
-	public void onCollision(GameObject obj) {
-		if(obj instanceof Barrier) {
-			explode();
-		} else if(obj instanceof Enemy) {
-			Enemy enemy = (Enemy)obj;
-			enemy.die();
-			explode();
-		}
-	}
-	
-	@Override
 	public void update(Graphics g) {
 		super.update(g);
 		g.fillRect(location.x,

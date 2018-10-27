@@ -32,6 +32,7 @@ public class Enemy extends GameObject {
 	public void die() {
 		GameContainer.getInstance().getController().destroyGameObject(this);
 		isAlive = false;
+		GameContainer.getInstance().getController().getCurrentEnemyWave().enemyKilled();
 	}
 	
 	public int getDestroyReward() {

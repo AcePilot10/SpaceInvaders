@@ -36,6 +36,12 @@ public class EnemyWave {
 		beginMoving();
 	}
 
+	public void enemyKilled() {
+		if(allEnemiesAreDead()) {
+			GameContainer.getInstance().getController().spawnNextWave();
+		}
+	}
+	
 	private void createEnemies() {
 		for(int row = 1; row <= rows; row++) {
 			for(int col = 1; col <= enemiesPerRow; col++) {
@@ -91,7 +97,7 @@ public class EnemyWave {
 			for(int row = 1; row <= rows; row++) {
 				for(int column = 1; column <= enemiesPerRow; column++) {
 					Enemy enemy = enemies[row - 1][column - 1];
-					if(enemyIsAlive(enemy)) {
+					if(enemy.isAlive()) {
 						
 						Point enemyLocation = enemy.getLocation();
 						int x = enemyLocation.x - X_PADDING / 2;
@@ -110,7 +116,7 @@ public class EnemyWave {
 			for(int row = 1; row <= rows; rows++) {
 				for(int column = enemiesPerRow; column >= 1; column--) {
 					Enemy enemy = enemies[row - 1][column - 1];
-					if(enemyIsAlive(enemy)) {
+					if(enemy.isAlive()) {
 						
 						Point enemyLocation = enemy.getLocation();
 						int x = enemyLocation.x + X_PADDING * 2;
@@ -134,6 +140,18 @@ public class EnemyWave {
 			}
 		}
 	}
+
+	private boolean allEnemiesAreDead() {
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < enemiesPerRow; col++) {
+				Enemy enemy = enemies[row][col];
+				if(enemy.isAlive()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	public int getRows() {
 		return this.rows;
@@ -141,9 +159,5 @@ public class EnemyWave {
 	
 	public void setRows(int rows) {
 		this.rows = rows;
-	}
-
-	public boolean enemyIsAlive(Enemy enemy) {
-		return GameContainer.getInstance().getController().isAlive(enemy);
 	}
 }
