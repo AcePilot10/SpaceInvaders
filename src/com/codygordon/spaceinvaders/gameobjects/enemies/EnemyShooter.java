@@ -1,5 +1,7 @@
 package com.codygordon.spaceinvaders.gameobjects.enemies;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Random;
 import java.util.Timer;
@@ -12,7 +14,7 @@ public class EnemyShooter extends Enemy {
 	
 	private int projectileSpeed = -15;
 	private long shootDelay = 1000;
-	private float shootChance = 100;
+	private float shootChance = 0.1f;
 	
 	private Timer shootTimer;
 
@@ -23,6 +25,21 @@ public class EnemyShooter extends Enemy {
 	@Override
 	public void init() {
 		beginShootingTimer();
+	}
+	
+	@Override
+	public void draw(Graphics g) {
+		g.setColor(Color.BLUE);
+		g.fillRect(location.x, 
+				location.y, 
+				collider.width, 
+				collider.height);
+		
+		g.setColor(Color.RED);
+		g.drawRect(collider.x,
+				collider.y,
+				collider.width, 
+				collider.height);
 	}
 	
 	public void beginShootingTimer() {
@@ -49,7 +66,7 @@ public class EnemyShooter extends Enemy {
 	
 	private void shoot() {
 		EnemyProjectile projectile = new EnemyProjectile(projectileSpeed);
-		int x = getLocation().x + collider.width * 2 - projectile.getCollider().width;
+		int x = getLocation().x + collider.width / 2;
 		int y = getLocation().y + collider.height;
 		projectile.setLocation(new Point(x, y));
 		GameContainer.getInstance().getController().initGameObject(projectile);

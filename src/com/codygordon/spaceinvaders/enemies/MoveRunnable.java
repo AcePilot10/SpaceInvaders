@@ -4,6 +4,7 @@ public class MoveRunnable implements Runnable {
 
 	private IEnemyMove enemyMove;
 	private long delay;
+	public boolean running = true;
 	
 	public MoveRunnable(IEnemyMove move, long delay) {
 		this.enemyMove = move;
@@ -13,7 +14,7 @@ public class MoveRunnable implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while(true) {
+			while(running) {
 				Thread.sleep(delay);
 				enemyMove.move();
 			}

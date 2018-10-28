@@ -52,6 +52,7 @@ public class GameLoop implements Runnable {
 			}
 		};
 		thread = new Thread(r);
+		thread.setName("Game Loop Thread");
 		thread.start();
 	}
 	

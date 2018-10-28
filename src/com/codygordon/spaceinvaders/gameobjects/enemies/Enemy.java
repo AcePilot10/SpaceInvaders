@@ -22,8 +22,7 @@ public class Enemy extends GameObject implements Cloneable {
 	public void init() { }
 	
 	@Override
-	public void update(Graphics g) {
-		super.update(g);
+	public void draw(Graphics g) {
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(location.x, 
 				location.y, 

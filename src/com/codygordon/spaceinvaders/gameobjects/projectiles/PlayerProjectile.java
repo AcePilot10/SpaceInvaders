@@ -14,9 +14,18 @@ public class PlayerProjectile extends Projectile {
 	}
 
 	@Override
-	public void update(Graphics g) {
+	public void draw(Graphics g) {
 		g.setColor(Color.BLUE);
-		super.update(g);
+		g.fillRect(location.x,
+				location.y,
+				collider.width, 
+				collider.height);
+		
+		g.setColor(Color.RED);
+		g.drawRect(collider.x,
+				collider.y,
+				collider.width, 
+				collider.height);
 	}
 	
 	@Override

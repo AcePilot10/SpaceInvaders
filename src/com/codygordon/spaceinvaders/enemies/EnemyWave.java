@@ -12,16 +12,15 @@ public class EnemyWave implements Cloneable {
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;
 	
-	public int xPadding;
-	public int yPadding;
-	
-	public long moveHorizontalDelay;
-	
+	private int xPadding;
+	private int yPadding;
+	private long moveHorizontalDelay;
 	private int rows;
 	private int enemiesPerRow;
 	private Thread moveHorizontalThread;
 	private int horizontalDirection = RIGHT;
-
+	private MoveRunnable moveRunnable;
+	
 	private Enemy[][] enemies;
 	public Enemy[] enemyPreset;
 	
@@ -61,6 +60,10 @@ public class EnemyWave implements Cloneable {
 		this.enemyPreset = enemyPreset;
 	}
 	
+	public void stop() {
+		moveRunnable.running = false;
+	}
+	
 	private void createEnemies() {
 		for(int row = 1; row <= rows; row++) {
 			Enemy enemyToClone = enemyPreset[row - 1];
@@ -68,6 +71,7 @@ public class EnemyWave implements Cloneable {
 				int x = xPadding * col;
 				int y = yPadding * row;
 				Enemy enemy = enemyToClone.clone();
+				enemy.name = "Enemy " + row + ", " + col;
 				enemy.setLocation(new Point(x, y));
 				initEnemy(enemy, row, col);
 			}
@@ -88,8 +92,8 @@ public class EnemyWave implements Cloneable {
 				moveHorizontal();
 			}
 		};
-		MoveRunnable runnable = new MoveRunnable(move, moveHorizontalDelay);
-		moveHorizontalThread = new Thread(runnable);
+		moveRunnable = new MoveRunnable(move, moveHorizontalDelay);
+		moveHorizontalThread = new Thread(moveRunnable);
 		moveHorizontalThread.setName("Move Horizontal Thread");
 		moveHorizontalThread.start();
 	}
@@ -120,11 +124,9 @@ public class EnemyWave implements Cloneable {
 				for(int column = 1; column <= enemiesPerRow; column++) {
 					Enemy enemy = enemies[row - 1][column - 1];
 					if(enemy.isAlive()) {
-						
 						Point enemyLocation = enemy.getLocation();
 						int x = enemyLocation.x - xPadding / 2;
 						int y = enemyLocation.y;
-						
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
 							horizontalDirection = RIGHT;
 							moveDown();
@@ -139,7 +141,6 @@ public class EnemyWave implements Cloneable {
 				for(int column = enemiesPerRow; column >= 1; column--) {
 					Enemy enemy = enemies[row - 1][column - 1];
 					if(enemy.isAlive()) {
-						
 						Point enemyLocation = enemy.getLocation();
 						int x = enemyLocation.x + xPadding * 2;
 						int y = enemyLocation.y;
@@ -191,7 +192,7 @@ public class EnemyWave implements Cloneable {
 		this.yPadding = yPadding;
 	}
 
-	public void stop() {
-		moveHorizontalThread.interrupt();
+	public void setHorizontalDelay(long delay) {
+		this.moveHorizontalDelay = delay;
 	}
 }

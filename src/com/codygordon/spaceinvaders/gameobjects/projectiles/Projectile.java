@@ -17,10 +17,9 @@ public class Projectile extends PhysicsObject {
 		collider.width = 5;
 		collider.height = 15;
 	}
-	
+
 	@Override
-	public void update(Graphics g) {
-		super.update(g);
+	public void draw(Graphics g) {
 		g.fillRect(location.x,
 				location.y,
 				collider.width, 

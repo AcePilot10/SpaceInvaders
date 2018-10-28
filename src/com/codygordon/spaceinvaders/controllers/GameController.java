@@ -30,6 +30,7 @@ public class GameController {
 	}
 	
 	public void spawnNextWave() {
+		currentWave.stop();
 		EnemyWave newEnemyWave = enemyWavePreset.clone();
 		spawnEnemyWave(newEnemyWave);
 	}
@@ -43,10 +44,13 @@ public class GameController {
 		initGameObject(barrier);
 	}
 	
-	public void spawnEnemyWave(EnemyWave wave) {
+	public void createEnemyWave(EnemyWave wave) {
 		enemyWavePreset = wave.clone();
+		spawnEnemyWave(wave);
+	}
+	
+	private void spawnEnemyWave(EnemyWave wave) {
 		this.currentWave = wave;
-		this.currentWave.moveHorizontalDelay = 500;
 		this.currentWave.init();
 	}
 	
@@ -74,9 +78,9 @@ public class GameController {
 		try {
 			for(GameObject obj : physicsObjects) {
 				for(GameObject otherObj : physicsObjects) {
-					if(otherObj != obj) { 
+					if(!otherObj.equals(obj) && !otherObj.getClass().getName().equals(obj.getClass().getName())) { 
 						if(obj.getCollider().intersects(otherObj.getCollider())) {
-							obj.onCollision(otherObj);
+ 							obj.onCollision(otherObj);
 						}
 					}
 				}

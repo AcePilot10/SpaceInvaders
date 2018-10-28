@@ -8,6 +8,7 @@ public abstract class GameObject {
 	
 	protected Point location;
 	protected Rectangle collider;
+	public String name;
 	
 	public GameObject() {
 		location = new Point();
@@ -16,7 +17,10 @@ public abstract class GameObject {
 	
 	public void update(Graphics g) { 
 		collider.setLocation(location.x, location.y);
+		draw(g);
 	}
+	
+	public void draw(Graphics g) { }
 	
 	public void onCollision(GameObject col) { }
 	
