@@ -1,7 +1,6 @@
 package com.codygordon.spaceinvaders.controllers;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
@@ -68,7 +67,7 @@ public class GameController {
 		objectsToDestroy.add(obj);
 	}
 	
-	private synchronized void destroyGameObjects() {
+	private void destroyGameObjects() {
 		physicsObjects.removeAll(objectsToDestroy);
 		view.getObjectsToDraw().removeAll(objectsToDestroy);
 		objectsToDestroy.clear();
@@ -80,12 +79,12 @@ public class GameController {
 				for(GameObject otherObj : physicsObjects) {
 					if(!otherObj.equals(obj) && !otherObj.getClass().getName().equals(obj.getClass().getName())) { 
 						if(obj.getCollider().intersects(otherObj.getCollider())) {
- 							obj.onCollision(otherObj);
+							obj.onCollision(otherObj);
 						}
 					}
 				}
 			}
-		} catch(ConcurrentModificationException e) { }
+		} catch(Exception e) { }
 	}
 	
 	public Player getPlayer() {

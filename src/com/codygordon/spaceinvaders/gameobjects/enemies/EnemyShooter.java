@@ -17,10 +17,6 @@ public class EnemyShooter extends Enemy {
 	private float shootChance = 0.1f;
 	
 	private Timer shootTimer;
-
-	public EnemyShooter() {
-		super();
-	}
 	
 	@Override
 	public void init() {

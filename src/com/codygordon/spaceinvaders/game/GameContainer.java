@@ -15,7 +15,7 @@ public class GameContainer {
 	private static GameContainer instance;
 
 	private double fps = 60;
-	private double ups = 60;
+	private double ups = 20;
 	private boolean renderTime = false;
 	
 	private GameUpdater updater;

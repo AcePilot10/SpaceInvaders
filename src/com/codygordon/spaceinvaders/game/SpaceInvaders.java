@@ -6,8 +6,7 @@ import java.awt.Point;
 import com.codygordon.spaceinvaders.builders.EnemyWaveBuilder;
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
-import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy1;
-import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy2;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 import com.codygordon.spaceinvaders.gameobjects.enemies.EnemyShooter;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
 
@@ -101,17 +100,20 @@ public class SpaceInvaders extends GameContainer {
 		EnemyShooter enemyPreset = new EnemyShooter();
 		enemyPreset.setShootDelay(6000);
 		
+		Enemy testEnemy = new Enemy();
+		
+		
 		//Enemy1 enemy1Preset = new Enemy1();
 		//Enemy2 enemy2Preset = new Enemy2();
 		
 		EnemyWaveBuilder waveBuilder = new EnemyWaveBuilder();
-		EnemyWave wave = waveBuilder.setRows(2)
-						.setEnemiesPerRow(4)
+		EnemyWave wave = waveBuilder.setRows(1)
+						.setEnemiesPerRow(2)
 						.setXPadding(50)
 						.setYPadding(50)
 						.setMoveHorizontalDelay(5000)
 						.createEnemyPreset(enemyPreset)
-						.createEnemyPreset(enemyPreset)
+						//.createEnemyPreset(enemyPreset)
 						.build();
 			
 		getController().createEnemyWave(wave);
