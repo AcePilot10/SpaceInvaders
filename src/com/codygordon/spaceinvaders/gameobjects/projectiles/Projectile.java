@@ -5,11 +5,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import com.codygordon.spaceinvaders.game.GameContainer;
-import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.PhysicsObject;
 import com.codygordon.spaceinvaders.gameobjects.ambience.Explosion;
-import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
-import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 
 public class Projectile extends PhysicsObject {
 

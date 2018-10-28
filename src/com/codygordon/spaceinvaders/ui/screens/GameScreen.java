@@ -32,9 +32,11 @@ public class GameScreen extends JPanel implements GameObserver {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		for(GameObject obj : gameObjectsToDraw) {
-			obj.update(g);
-		}
+		try {
+			for(GameObject obj : gameObjectsToDraw) {
+				obj.update(g);
+			}
+		} catch(Exception e) { }
 	}
 	
 	public ArrayList<GameObject> getObjectsToDraw() {

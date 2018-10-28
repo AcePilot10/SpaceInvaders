@@ -14,13 +14,14 @@ import com.codygordon.spaceinvaders.gameobjects.projectiles.PlayerProjectile;
 
 public class Player extends GameObject {
 
-
 	public static final int MOVE_LEFT = 1;
 	public static final int MOVE_RIGHT = 2;
-	public static final int PROJECTILE_SPEED = 10;
-	public static final long SHOOT_DELAY = 800;
 	
-	private int speed;
+	private long shootDelay = 800;
+	private int projectileSpeed = 10;
+	private int speed = 5;
+	private Color color;
+	
 	private boolean canShoot = true;
 	
 	public Player() {
@@ -34,7 +35,7 @@ public class Player extends GameObject {
 	
 	@Override
 	public void update(Graphics g) {
-		g.setColor(Color.RED);
+		g.setColor(color);
 		g.fillRect(location.x,
 				location.y,
 				(int)collider.getWidth(),
@@ -52,9 +53,9 @@ public class Player extends GameObject {
 	public void shoot() {
 		if(canShoot) {
 			GameController controller = GameContainer.getInstance().getController();
-			int spawnX = getLocation().x + (25 / 2);
-			int spawnY = getLocation().y - (50 / 2) - 5;
-			PlayerProjectile projectile = new PlayerProjectile(PROJECTILE_SPEED);
+			int spawnX = getLocation().x + (collider.width / 2);
+			int spawnY = getLocation().y - (collider.height / 2);
+			PlayerProjectile projectile = new PlayerProjectile(projectileSpeed);
 			projectile.setLocation(new Point(spawnX, spawnY));
 			controller.initGameObject(projectile);
 			startShootDelay();
@@ -68,7 +69,7 @@ public class Player extends GameObject {
 			public void run() {
 				canShoot = true;
 			}
-		}, SHOOT_DELAY);
+		}, shootDelay);
 	}
 	
 	
@@ -78,5 +79,25 @@ public class Player extends GameObject {
 	
 	public void setSpeed(int speed) {
 		this.speed = speed;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	public void setWidth(int width) {
+		collider.width = width;
+	}
+	
+	public void setHeight(int height) {
+		collider.height = height;
+	}
+	
+	public void setProjectileSpeed(int speed) {
+		this.projectileSpeed = speed;
+	}
+	
+	public void setShootDelay(long delay) {
+		this.shootDelay = delay;
 	}
 }

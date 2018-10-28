@@ -1,27 +1,31 @@
 package com.codygordon.spaceinvaders.game;
 
+import com.codygordon.spaceinvaders.builders.BarrierBuilder;
+import com.codygordon.spaceinvaders.builders.EnemyWaveBuilder;
+import com.codygordon.spaceinvaders.builders.GameBuilder;
 import com.codygordon.spaceinvaders.builders.GameLoopBuilder;
+import com.codygordon.spaceinvaders.builders.PlayerBuilder;
 import com.codygordon.spaceinvaders.controllers.GameController;
-import com.codygordon.spaceinvaders.difficulty.GameDifficultyManager;
 import com.codygordon.spaceinvaders.ui.GameFrame;
 import com.codygordon.spaceinvaders.ui.screens.GameScreen;
 import com.codygordon.spaceinvaders.ui.screens.HomeScreen;
 
 public class GameContainer {
 
-	/** Game Loop Settings **/
-	public static final double FPS = 60;
-	public static final double UPS = 60;
-	public static final boolean RENDER_TIME = false;
-	
 	private static GameContainer instance;
+
+	private double fps = 60;
+	private double ups = 60;
+	private boolean renderTime = false;
 	
-	/** Reference Variables **/
 	private GameUpdater updater;
 	private GameLoop loop;
 	private GameFrame mainFrame;
 	private GameController controller;
-	private GameDifficultyManager difficultyManager;
+	
+	protected BarrierBuilder barrierBuilder = GameBuilder.getBarrierBuilder();
+	protected PlayerBuilder playerBuilder = GameBuilder.getPlayerBuilder();
+	protected EnemyWaveBuilder enemyWaveBuilder = GameBuilder.getEnemyWaveBuilder();
 	
 	public GameContainer() {
 		instance = this;
@@ -33,7 +37,6 @@ public class GameContainer {
 		return instance;
 	}
 	
-	/** Init Methods **/	
 	private void initFrame() {
 		mainFrame = new GameFrame();
 		mainFrame.showScreen(new HomeScreen());
@@ -41,9 +44,9 @@ public class GameContainer {
 	
 	private void initLoop() {
 		GameLoopBuilder builder = new GameLoopBuilder();
-		loop = builder.setRenderFrames(RENDER_TIME)
-				.setFps(FPS)
-				.setUps(UPS)
+		loop = builder.setRenderFrames(renderTime)
+				.setFps(fps)
+				.setUps(ups)
 				.build();
 		loop.run();
 	}
@@ -52,11 +55,17 @@ public class GameContainer {
 		System.out.println("Starting game...");
 		GameScreen screen = new GameScreen();
 		controller = new GameController(screen);
+		createBarriers();
+		createPlayer();
+		createEnemyWave();
 		mainFrame.showScreen(screen);
 		initLoop();
 	}
 	
-	/** Getters **/
+	public void createBarriers() { }
+	public void createPlayer() { }
+	public void createEnemyWave() { }
+	
 	public GameUpdater getUpdater() {
 		return this.updater;
 	}
@@ -68,8 +77,12 @@ public class GameContainer {
 	public GameController getController() {
 		return this.controller;
 	}
-
-	public GameDifficultyManager getDifficultyManager() {
-		return difficultyManager;
+	
+	public void setFps(double fps) {
+		this.fps = fps;
+	}
+	
+	public void setUps(double ups) {
+		this.ups = ups;
 	}
 }

@@ -16,7 +16,7 @@ public class GameKeyListener implements KeyEventListener {
 		} else if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
 			 GameContainer.getInstance().getController().getPlayer().move(Player.MOVE_RIGHT); 
 		} else if(key == KeyEvent.VK_SPACE) {
-			GameContainer.getInstance().getController().shoot();
+			GameContainer.getInstance().getController().getPlayer().shoot();
 		}
 	}
 }

@@ -9,16 +9,20 @@ import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.projectiles.EnemyProjectile;
 
 public class EnemyShooter extends Enemy {
-
-	public static final int PROJECTILE_SPEED = -5;
 	
-	private long shootDelay;
-	private float shootChance;
+	private int projectileSpeed = -15;
+	private long shootDelay = 1000;
+	private float shootChance = 100;
 	
 	private Timer shootTimer;
 
 	public EnemyShooter() {
 		super();
+	}
+	
+	@Override
+	public void init() {
+		beginShootingTimer();
 	}
 	
 	public void beginShootingTimer() {
@@ -44,7 +48,7 @@ public class EnemyShooter extends Enemy {
 	}
 	
 	private void shoot() {
-		EnemyProjectile projectile = new EnemyProjectile(PROJECTILE_SPEED);
+		EnemyProjectile projectile = new EnemyProjectile(projectileSpeed);
 		int x = getLocation().x + collider.width * 2 - projectile.getCollider().width;
 		int y = getLocation().y + collider.height;
 		projectile.setLocation(new Point(x, y));
@@ -75,5 +79,9 @@ public class EnemyShooter extends Enemy {
 	
 	public Timer getShootTimer() {
 		return this.shootTimer;
+	}
+	
+	public void setProjectileSpeed(int projectileSpeed) {
+		this.projectileSpeed = projectileSpeed;
 	}
 }

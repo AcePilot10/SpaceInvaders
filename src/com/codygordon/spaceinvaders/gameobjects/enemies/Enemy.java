@@ -7,7 +7,7 @@ import java.awt.Point;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 
-public class Enemy extends GameObject {
+public class Enemy extends GameObject implements Cloneable {
 	
 	public int destroyReward;
 	private boolean isAlive = true;
@@ -18,6 +18,8 @@ public class Enemy extends GameObject {
 		collider.height = 35;
 		setLocation(new Point(50, 50));
 	}
+	
+	public void init() { }
 	
 	@Override
 	public void update(Graphics g) {
@@ -41,5 +43,15 @@ public class Enemy extends GameObject {
 	
 	public boolean isAlive() {
 		return this.isAlive;
+	}
+	
+	@Override
+	public Enemy clone() {
+		try {
+			return (Enemy) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

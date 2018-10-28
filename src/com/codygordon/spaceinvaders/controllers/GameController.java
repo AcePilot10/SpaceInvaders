@@ -1,14 +1,11 @@
 package com.codygordon.spaceinvaders.controllers;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
-import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
-import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
 import com.codygordon.spaceinvaders.input.FrameKeyListener;
 import com.codygordon.spaceinvaders.input.GameKeyListener;
@@ -20,13 +17,11 @@ public class GameController {
 	private GameScreen view;
 	private GameKeyListener listener;
 	
-	private int barrierWidth;
-	private int barrierHeight;
-	
 	private ArrayList<GameObject> physicsObjects = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objectsToDestroy = new ArrayList<GameObject>();	
 	
 	private EnemyWave currentWave;
+	private EnemyWave enemyWavePreset;
 		
 	public GameController(GameScreen screen) {
 		this.view = screen;				
@@ -35,26 +30,24 @@ public class GameController {
 	}
 	
 	public void spawnNextWave() {
-		System.out.println("All enemies are dead!");
+		EnemyWave newEnemyWave = enemyWavePreset.clone();
+		spawnEnemyWave(newEnemyWave);
 	}
 	
-	public void createPlayer() {
-		player = new Player();
-		player.setSpeed(15);
+	public void createPlayer(Player player) {
+		this.player = player;
 		initGameObject(player);
 	}
 	
-	public void addBarriers() {
-		Barrier barrier1 = new Barrier();
-		int frameHeight = GameContainer.getInstance().getMainFrame().getHeight();
-		int barrierHeight = Barrier.HEIGHT;
-		int barrierY = frameHeight - (barrierHeight * 2) * 2;
-		barrier1.setLocation(new Point(85, barrierY));
-		initGameObject(barrier1);
+	public void createBarrier(Barrier barrier) {
+		initGameObject(barrier);
 	}
 	
-	public void shoot() {
-		player.shoot();
+	public void spawnEnemyWave(EnemyWave wave) {
+		enemyWavePreset = wave.clone();
+		this.currentWave = wave;
+		this.currentWave.moveHorizontalDelay = 500;
+		this.currentWave.init();
 	}
 	
 	public void update() {
@@ -62,10 +55,13 @@ public class GameController {
 		destroyGameObjects();
 	}
 	
-	private void spawnEnemyWave(EnemyWave wave) {
-		this.currentWave = wave;
-		this.currentWave.moveHorizontalDelay = 500;
-		this.currentWave.init();
+	public synchronized void initGameObject(GameObject obj) {
+		physicsObjects.add(obj);
+		view.getObjectsToDraw().add(obj);
+	}
+	
+	public void destroyGameObject(GameObject obj) {
+		objectsToDestroy.add(obj);
 	}
 	
 	private synchronized void destroyGameObjects() {
@@ -86,19 +82,6 @@ public class GameController {
 				}
 			}
 		} catch(ConcurrentModificationException e) { }
-	}
-	
-	public synchronized  void initGameObject(GameObject obj) {
-		physicsObjects.add(obj);
-		view.getObjectsToDraw().add(obj);
-	}
-	
-	public void destroyGameObject(GameObject obj) {
-		objectsToDestroy.add(obj);
-	}
-	
-	public boolean isAlive(Enemy enemy) {
-		return view.getObjectsToDraw().contains(enemy);
 	}
 	
 	public Player getPlayer() {

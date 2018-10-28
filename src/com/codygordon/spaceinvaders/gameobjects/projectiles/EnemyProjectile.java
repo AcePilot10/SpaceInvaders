@@ -5,7 +5,6 @@ import java.awt.Graphics;
 
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
-import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 
 public class EnemyProjectile extends Projectile {
 

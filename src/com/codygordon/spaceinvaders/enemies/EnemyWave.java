@@ -5,16 +5,15 @@ import java.awt.Point;
 import com.codygordon.spaceinvaders.controllers.GameController;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
-import com.codygordon.spaceinvaders.gameobjects.enemies.EnemyShooter;
 import com.codygordon.spaceinvaders.util.ScreenUtil;
 
-public class EnemyWave {
+public class EnemyWave implements Cloneable {
 
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;
 	
-	public static final int Y_PADDING = 50;
-	public static final int X_PADDING = 50;
+	public int xPadding;
+	public int yPadding;
 	
 	public long moveHorizontalDelay;
 	
@@ -24,11 +23,23 @@ public class EnemyWave {
 	private int horizontalDirection = RIGHT;
 
 	private Enemy[][] enemies;
+	public Enemy[] enemyPreset;
+	
+	@Override
+	public EnemyWave clone() {
+		try {
+			return (EnemyWave) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	public EnemyWave(int rows, int enemiesPerRow) {
 		this.rows = rows;
 		this.enemiesPerRow = enemiesPerRow;
 		enemies = new Enemy[rows][enemiesPerRow];
+		enemyPreset = new Enemy[rows];
 	}
 	
 	public void init() {
@@ -42,21 +53,32 @@ public class EnemyWave {
 		}
 	}
 	
+	public void addEnemyPreset(int row, Enemy enemy) {
+		enemyPreset[row] = enemy;
+	}
+	
+	public void setEnemyPreset(Enemy[] enemyPreset) {
+		this.enemyPreset = enemyPreset;
+	}
+	
 	private void createEnemies() {
 		for(int row = 1; row <= rows; row++) {
+			Enemy enemyToClone = enemyPreset[row - 1];
 			for(int col = 1; col <= enemiesPerRow; col++) {
-				int y = Y_PADDING * row; 
-				int x = X_PADDING * col;
-				EnemyShooter enemy = new EnemyShooter();
-				enemy.setShootChance(1f);
-				enemy.setShootDelay(1500);
+				int x = xPadding * col;
+				int y = yPadding * row;
+				Enemy enemy = enemyToClone.clone();
 				enemy.setLocation(new Point(x, y));
-				enemies[row-1][col-1] = enemy;
-				GameController controller = GameContainer.getInstance().getController();
-				controller.initGameObject(enemy);
-				enemy.beginShootingTimer();
+				initEnemy(enemy, row, col);
 			}
 		}
+	}
+	
+	private void initEnemy(Enemy enemy, int row, int col) {
+		enemies[row-1][col-1] = enemy;
+		GameController controller = GameContainer.getInstance().getController();
+		controller.initGameObject(enemy);
+		enemy.init();
 	}
 		
 	private void beginMoving() {
@@ -76,10 +98,10 @@ public class EnemyWave {
 		int deltaX = 0;
 		switch(horizontalDirection) {
 		case LEFT:
-			deltaX -= X_PADDING;
+			deltaX -= xPadding;
 			break;
 		case RIGHT:
-			deltaX += X_PADDING;
+			deltaX += yPadding;
 			break;
 		}
 		for(int row = 1; row <= rows; row++) {
@@ -100,7 +122,7 @@ public class EnemyWave {
 					if(enemy.isAlive()) {
 						
 						Point enemyLocation = enemy.getLocation();
-						int x = enemyLocation.x - X_PADDING / 2;
+						int x = enemyLocation.x - xPadding / 2;
 						int y = enemyLocation.y;
 						
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
@@ -119,7 +141,7 @@ public class EnemyWave {
 					if(enemy.isAlive()) {
 						
 						Point enemyLocation = enemy.getLocation();
-						int x = enemyLocation.x + X_PADDING * 2;
+						int x = enemyLocation.x + xPadding * 2;
 						int y = enemyLocation.y;
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
 							horizontalDirection = LEFT;
@@ -136,7 +158,7 @@ public class EnemyWave {
 		for(int row = 1; row <= rows; row++) {
 			for(int enemyColumn = 1; enemyColumn <= enemiesPerRow; enemyColumn++) {
 				Enemy enemy = enemies[row - 1][enemyColumn - 1];
-				enemy.setLocation(new Point(enemy.getLocation().x, enemy.getLocation().y + Y_PADDING)); 
+				enemy.setLocation(new Point(enemy.getLocation().x, enemy.getLocation().y + yPadding)); 
 			}
 		}
 	}
@@ -159,5 +181,17 @@ public class EnemyWave {
 	
 	public void setRows(int rows) {
 		this.rows = rows;
+	}
+	
+	public void setXPadding(int xPadding) {
+		this.xPadding = xPadding;
+	}
+	
+	public void setYPadding(int yPadding) {
+		this.yPadding = yPadding;
+	}
+
+	public void stop() {
+		moveHorizontalThread.interrupt();
 	}
 }

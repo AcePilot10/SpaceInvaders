@@ -17,7 +17,6 @@ public class Program {
 	}	
 	
 	private void initGame() {
-		//game = new GameContainer();
 		game = new SpaceInvaders();
 	}
 	
