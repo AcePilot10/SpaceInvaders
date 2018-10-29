@@ -11,6 +11,7 @@ public class EnemyWaveBuilder {
 	private int enemiesPerRow = 1;
 	private int xPadding = 0;
 	private int yPadding = 0;
+	private int horizontalDistance = 0;
 	private long moveHorizontalDelay;
 	private ArrayList<Enemy> enemyPreset = new ArrayList<Enemy>();
 	
@@ -44,11 +45,17 @@ public class EnemyWaveBuilder {
 		return this;
 	}
 	
+	public EnemyWaveBuilder setMoveHorizontalDistance(int distance) {
+		this.horizontalDistance = distance;
+		return this;
+	}
+	
 	public EnemyWave build() {
 		EnemyWave wave = new EnemyWave(rows, enemiesPerRow);
 		wave.setXPadding(xPadding);
 		wave.setYPadding(yPadding);
 		wave.setHorizontalDelay(moveHorizontalDelay);
+		wave.setMoveHorizontalDistance(horizontalDistance);
 		
 		Enemy[] enemyPreset = new Enemy[rows];
 		enemyPreset = this.enemyPreset.toArray(enemyPreset);

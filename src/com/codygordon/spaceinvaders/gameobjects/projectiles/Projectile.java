@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.PhysicsObject;
 import com.codygordon.spaceinvaders.gameobjects.ambience.Explosion;
+import com.codygordon.spaceinvaders.util.ScreenUtil;
 
 public class Projectile extends PhysicsObject {
 
@@ -16,6 +17,14 @@ public class Projectile extends PhysicsObject {
 		collider = new Rectangle();
 		collider.width = 5;
 		collider.height = 15;
+	}
+	
+	@Override
+	public void update(Graphics g) {
+		super.update(g);
+		if(ScreenUtil.isOffScreen(getLocation())) {
+			destroy();
+		}
 	}
 
 	@Override
@@ -33,6 +42,10 @@ public class Projectile extends PhysicsObject {
 		explosion.setLocation(location);
 		GameContainer.getInstance().getController().initGameObject(explosion);
 		explosion.start();
+		destroy();
+	}
+	
+	private synchronized void destroy() {
 		GameContainer.getInstance().getController().destroyGameObject(this);
 	}
 }

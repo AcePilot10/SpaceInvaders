@@ -52,7 +52,7 @@ public class EnemyShooter extends Enemy {
 	
 	private boolean tryToShoot() {
 		Random rdm = new Random();
-		float rdmNumber = rdm.nextFloat();
+		float rdmNumber = rdm.nextFloat() * 100;
 		if(shootChance >= rdmNumber) {
 			return true;
 		} else {
@@ -95,7 +95,7 @@ public class EnemyShooter extends Enemy {
 	}
 	
 	public void setProjectileSpeed(int projectileSpeed) {
-		this.projectileSpeed = projectileSpeed;
+		this.projectileSpeed = -projectileSpeed;
 	}
 	
 	public int getProjectileSpeed() {

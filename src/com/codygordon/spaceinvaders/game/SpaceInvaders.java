@@ -22,7 +22,7 @@ public class SpaceInvaders extends GameContainer {
 				.setHeight(playerSize)
 				.setWidth(playerSize)
 				.setMoveSpeed(5)
-				.setProjectileSpeed(15)
+				.setProjectileSpeed(5)
 				.setShootDelay(800)
 				.setStartingLocation(new Point(startX, startY))
 				.build();
@@ -68,15 +68,19 @@ public class SpaceInvaders extends GameContainer {
 		enemy1.setShootDelay(5000);
 		enemy2.setShootDelay(5000);
 		
-		enemy1.setShootChance(0.1f);
-		enemy2.setShootChance(0.1f);
+		enemy1.setShootChance(25f);
+		enemy2.setShootChance(25f);
+		
+		enemy1.setProjectileSpeed(5);
+		enemy2.setProjectileSpeed(5);
 		
 		EnemyWaveBuilder waveBuilder = new EnemyWaveBuilder();
 		EnemyWave wave = waveBuilder.setRows(2)
 						.setEnemiesPerRow(5)
 						.setXPadding(50)
 						.setYPadding(50)
-						.setMoveHorizontalDelay(5000)
+						.setMoveHorizontalDistance(50)
+						.setMoveHorizontalDelay(1000)
 						.createEnemyPreset(enemy1)
 						.createEnemyPreset(enemy2)
 						.build();

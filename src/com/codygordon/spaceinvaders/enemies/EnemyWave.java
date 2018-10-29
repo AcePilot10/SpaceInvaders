@@ -18,6 +18,7 @@ public class EnemyWave implements Cloneable {
 	private int rows;
 	private int enemiesPerRow;
 	private Thread moveHorizontalThread;
+	private int moveHorizontalDistance;
 	private int horizontalDirection = RIGHT;
 	private MoveRunnable moveRunnable;
 	
@@ -65,10 +66,11 @@ public class EnemyWave implements Cloneable {
 	}
 	
 	private void createEnemies() {
+		int startingX = xPadding * rows * 2;
 		for(int row = 1; row <= rows; row++) {
 			Enemy enemyToClone = enemyPreset[row - 1];
 			for(int col = 1; col <= enemiesPerRow; col++) {
-				int x = xPadding * col;
+				int x = xPadding * col + startingX;
 				int y = yPadding * row;
 				Enemy enemy = enemyToClone.clone();
 				enemy.name = "Enemy " + row + ", " + col;
@@ -102,10 +104,10 @@ public class EnemyWave implements Cloneable {
 		int deltaX = 0;
 		switch(horizontalDirection) {
 		case LEFT:
-			deltaX -= xPadding;
+			deltaX -= moveHorizontalDistance;
 			break;
 		case RIGHT:
-			deltaX += yPadding;
+			deltaX += moveHorizontalDistance;
 			break;
 		}
 		for(int row = 1; row <= rows; row++) {
@@ -125,7 +127,7 @@ public class EnemyWave implements Cloneable {
 					Enemy enemy = enemies[row - 1][column - 1];
 					if(enemy.isAlive()) {
 						Point enemyLocation = enemy.getLocation();
-						int x = enemyLocation.x - xPadding / 2;
+						int x = enemyLocation.x - moveHorizontalDistance / 2;
 						int y = enemyLocation.y;
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
 							horizontalDirection = RIGHT;
@@ -142,7 +144,7 @@ public class EnemyWave implements Cloneable {
 					Enemy enemy = enemies[row - 1][column - 1];
 					if(enemy.isAlive()) {
 						Point enemyLocation = enemy.getLocation();
-						int x = enemyLocation.x + xPadding * 2;
+						int x = enemyLocation.x + moveHorizontalDistance * 2;
 						int y = enemyLocation.y;
 						if(ScreenUtil.isOffScreen(new Point(x, y))) {
 							horizontalDirection = LEFT;
@@ -194,5 +196,13 @@ public class EnemyWave implements Cloneable {
 
 	public void setHorizontalDelay(long delay) {
 		this.moveHorizontalDelay = delay;
+	}
+	
+	public int getMoveHorizontalDistance() {
+		return this.moveHorizontalDistance;
+	}
+	
+	public void setMoveHorizontalDistance(int distance) {
+		this.moveHorizontalDistance = distance;
 	}
 }
