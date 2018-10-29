@@ -2,11 +2,13 @@ package com.codygordon.spaceinvaders.ui.screens;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.codygordon.spaceinvaders.assets.SpriteLoader;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.interfaces.GameObserver;
@@ -32,6 +34,12 @@ public class GameScreen extends JPanel implements GameObserver {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		
+		//BufferedImage image = SpriteLoader.getSprite("space_background.png");
+		//g.drawImage(background, 0, 0, null);
+		
+		//drawBackground(g);
+		
 		try {
 			for(GameObject obj : gameObjectsToDraw) {
 				obj.update(g);
@@ -46,5 +54,12 @@ public class GameScreen extends JPanel implements GameObserver {
 	@Override
 	public void update() {
 		repaint();
+	}
+	
+	private void drawBackground(Graphics g) {
+		new Thread(() -> {
+			BufferedImage img = SpriteLoader.getSprite("space_background.png", getWidth(), getHeight());
+			g.drawImage(img, 0, 0, null);
+		}).start();;
 	}
 }
