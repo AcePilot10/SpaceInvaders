@@ -79,7 +79,7 @@ public class GameController {
 				for(GameObject otherObj : physicsObjects) {
 					if(!otherObj.equals(obj) && !otherObj.getClass().getName().equals(obj.getClass().getName())) { 
 						if(obj.getCollider().intersects(otherObj.getCollider())) {
-							obj.onCollision(otherObj);
+							otherObj.onCollision(obj);
 						}
 					}
 				}

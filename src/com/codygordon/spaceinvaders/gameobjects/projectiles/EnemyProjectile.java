@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
+import com.codygordon.spaceinvaders.gameobjects.player.Player;
 
 public class EnemyProjectile extends Projectile {
 
@@ -21,6 +22,8 @@ public class EnemyProjectile extends Projectile {
 	@Override
 	public void onCollision(GameObject obj) {
 		if(obj instanceof Barrier) {
+			explode();
+		} else if(obj instanceof Player) {
 			explode();
 		}
 	}

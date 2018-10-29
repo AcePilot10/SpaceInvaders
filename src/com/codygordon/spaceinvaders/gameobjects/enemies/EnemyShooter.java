@@ -97,4 +97,8 @@ public class EnemyShooter extends Enemy {
 	public void setProjectileSpeed(int projectileSpeed) {
 		this.projectileSpeed = projectileSpeed;
 	}
+	
+	public int getProjectileSpeed() {
+		return this.projectileSpeed;
+	}
 }

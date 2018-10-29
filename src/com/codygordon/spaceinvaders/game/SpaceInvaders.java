@@ -6,51 +6,11 @@ import java.awt.Point;
 import com.codygordon.spaceinvaders.builders.EnemyWaveBuilder;
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
-import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
-import com.codygordon.spaceinvaders.gameobjects.enemies.EnemyShooter;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy1;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy2;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
 
 public class SpaceInvaders extends GameContainer {
-
-	/*
-	@Override
-	public void startGame() {
-		super.startGame();
-
-		EnemyShooter enemyPreset = new EnemyShooter();
-		
-		EnemyWaveBuilder waveBuilder = new EnemyWaveBuilder();
-		EnemyWave wave = waveBuilder.setRows(1)
-						.setEnemiesPerRow(1)
-						.setXPadding(50)
-						.setYPadding(50)
-						.createEnemyPreset(enemyPreset)
-						.build();
-		
-		PlayerBuilder playerBuilder = new PlayerBuilder();
-		Player player = playerBuilder
-				.setColor(Color.RED)
-				.setHeight(50)
-				.setWidth(50)
-				.setMoveSpeed(5)
-				.setProjectileSpeed(15)
-				.setShootDelay(800)
-				.setStartingLocation(new Point(getMainFrame().getWidth() / 2, getMainFrame().getHeight() - 100))
-				.build();
-		
-		BarrierBuilder builder = new BarrierBuilder();
-		Barrier barrier = builder
-				.setColor(Color.BLUE)
-				.setHeight(25)
-				.setWidth(75)
-				.setLocation(new Point((getMainFrame().getWidth() / 2) - (75 / 2), getMainFrame().getHeight() - 200))
-				.build();
-		
-		getController().spawnEnemyWave(wave);
-		getController().createPlayer(player);
-		getController().createBarrier(barrier);
-	}
-	*/
 	
 	@Override
 	public void createPlayer() {
@@ -91,29 +51,34 @@ public class SpaceInvaders extends GameContainer {
 				.setLocation(new Point(midX + width * 2, y))
 				.build();
 		
-		//getController().createBarrier(barrier1);
-		//getController().createBarrier(barrier2);
+		getController().createBarrier(barrier1);
+		getController().createBarrier(barrier2);
 	}
 	
 	@Override
 	public void createEnemyWave() {
-		EnemyShooter enemyPreset = new EnemyShooter();
-		enemyPreset.setShootDelay(6000);
+		Enemy1 enemy1 = new Enemy1();
+		Enemy2 enemy2 = new Enemy2();
+				
+		enemy1.setWidth(35);
+		enemy1.setHeight(35); 
+		enemy2.setWidth(35);
+		enemy2.setHeight(35);
 		
-		Enemy testEnemy = new Enemy();
+		enemy1.setShootDelay(5000);
+		enemy2.setShootDelay(5000);
 		
-		
-		//Enemy1 enemy1Preset = new Enemy1();
-		//Enemy2 enemy2Preset = new Enemy2();
+		enemy1.setShootChance(0.1f);
+		enemy2.setShootChance(0.1f);
 		
 		EnemyWaveBuilder waveBuilder = new EnemyWaveBuilder();
-		EnemyWave wave = waveBuilder.setRows(1)
-						.setEnemiesPerRow(2)
+		EnemyWave wave = waveBuilder.setRows(2)
+						.setEnemiesPerRow(5)
 						.setXPadding(50)
 						.setYPadding(50)
 						.setMoveHorizontalDelay(5000)
-						.createEnemyPreset(enemyPreset)
-						//.createEnemyPreset(enemyPreset)
+						.createEnemyPreset(enemy1)
+						.createEnemyPreset(enemy2)
 						.build();
 			
 		getController().createEnemyWave(wave);

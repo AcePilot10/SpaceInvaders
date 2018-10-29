@@ -34,12 +34,15 @@ public class Player extends GameObject {
 	}
 	
 	@Override
-	public void update(Graphics g) {
+	public void draw(Graphics g) {
 		g.setColor(color);
 		g.fillRect(location.x,
 				location.y,
 				(int)collider.getWidth(),
 				(int)collider.getHeight());
+		
+		g.setColor(Color.GREEN);
+		g.drawLine(location.x + collider.width / 2, location.y, location.x + collider.width / 2, 0);
 	}
 
 	public void move(int direction) {

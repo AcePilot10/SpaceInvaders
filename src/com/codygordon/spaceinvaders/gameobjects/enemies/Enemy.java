@@ -3,19 +3,22 @@ package com.codygordon.spaceinvaders.gameobjects.enemies;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 
-public class Enemy extends GameObject implements Cloneable {
+public class Enemy extends GameObject  {
 	
 	public int destroyReward;
 	private boolean isAlive = true;
+	private int width;
+	private int height;
 	
 	public Enemy() {
 		super();
-		collider.width = 35;
-		collider.height = 35;
+		collider.width = width;
+		collider.height = height;
 		setLocation(new Point(50, 50));
 	}
 	
@@ -28,6 +31,18 @@ public class Enemy extends GameObject implements Cloneable {
 				location.y, 
 				collider.width, 
 				collider.height);
+	}
+	
+	@Override
+	public Enemy clone() {
+		try {
+			Enemy enemy = (Enemy)super.clone();
+			enemy.setCollider(new Rectangle(width, height));
+			return enemy;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void die() {
@@ -44,13 +59,19 @@ public class Enemy extends GameObject implements Cloneable {
 		return this.isAlive;
 	}
 	
-	@Override
-	public Enemy clone() {
-		try {
-			return (Enemy) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
 	}
 }
