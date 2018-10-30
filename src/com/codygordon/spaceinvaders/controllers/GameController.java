@@ -95,7 +95,7 @@ public class GameController {
 	public void killPlayer() {
 		currentLives--;
 		view.updateLives();
-		if(currentLives > 0) {
+		if(currentLives > -1) {
 			player.isAlive = false;
 			respawnPlayer();
 		} else {

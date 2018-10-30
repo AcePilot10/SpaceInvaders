@@ -21,7 +21,7 @@ public class SpaceInvaders extends GameContainer {
 				.setColor(Color.RED)
 				.setHeight(playerSize)
 				.setWidth(playerSize)
-				.setMoveSpeed(5)
+				.setMoveSpeed(15)
 				.setProjectileSpeed(5)
 				.setShootDelay(800)
 				.setStartingLocation(new Point(startX, startY))
