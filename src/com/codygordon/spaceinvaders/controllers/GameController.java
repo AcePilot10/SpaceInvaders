@@ -1,8 +1,10 @@
 package com.codygordon.spaceinvaders.controllers;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
+import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
@@ -21,7 +23,10 @@ public class GameController {
 	
 	private EnemyWave currentWave;
 	private EnemyWave enemyWavePreset;
-		
+	
+	private int currentScore = 0;
+	private int currentLives = 3;
+	
 	public GameController(GameScreen screen) {
 		this.view = screen;				
 		listener = new GameKeyListener();
@@ -87,11 +92,52 @@ public class GameController {
 		} catch(Exception e) { }
 	}
 	
+	public void killPlayer() {
+		currentLives--;
+		view.updateLives();
+		if(currentLives > 0) {
+			player.isAlive = false;
+			respawnPlayer();
+		} else {
+			endGame();
+		}
+	}
+	
+	private void endGame() {
+		//TODO
+		System.out.println("Game Over!");
+	}
+	
+	private void respawnPlayer() {
+		int x = GameContainer.getInstance().getMainFrame().getWidth() / 2 - player.getWidth() / 2;
+		int y = GameContainer.getInstance().getMainFrame().getHeight() - player.getHeight() * 2;
+		player.setLocation(new Point(x, y));
+		try {
+			 Thread.sleep(3000);
+			 player.isAlive = true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Player getPlayer() {
 		return this.player;
 	}
 	
 	public EnemyWave getCurrentEnemyWave() {
 		return this.currentWave;
+	}
+	
+	public int getScore() {
+		return this.currentScore;
+	}
+	
+	public void addToScore(int value) {
+		currentScore += value;
+		view.updateScore();
+	}
+	
+	public int getCurrentLives() {
+		return this.currentLives;
 	}
 }

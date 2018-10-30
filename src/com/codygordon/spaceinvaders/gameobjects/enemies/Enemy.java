@@ -14,6 +14,7 @@ public class Enemy extends GameObject  {
 	private boolean isAlive = true;
 	private int width;
 	private int height;
+	private int pointValue = 25;
 	
 	public Enemy() {
 		super();
@@ -48,6 +49,7 @@ public class Enemy extends GameObject  {
 	public void die() {
 		GameContainer.getInstance().getController().destroyGameObject(this);
 		isAlive = false;
+		GameContainer.getInstance().getController().addToScore(pointValue);
 		GameContainer.getInstance().getController().getCurrentEnemyWave().enemyKilled();
 	}
 	
@@ -73,5 +75,13 @@ public class Enemy extends GameObject  {
 	
 	public void setHeight(int height) {
 		this.height = height;
+	}
+	
+	public int getPointValue() {
+		return this.pointValue;
+	}
+	
+	public void setPointValue(int value) {
+		this.pointValue = value;
 	}
 }

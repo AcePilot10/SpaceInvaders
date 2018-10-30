@@ -101,6 +101,11 @@ public class EnemyWave implements Cloneable {
 	}
 	
 	private void moveHorizontal() {
+		int currentDirection = horizontalDirection;
+		handleDirectionChange();
+		if(currentDirection != horizontalDirection) {
+			return;
+		}
 		int deltaX = 0;
 		switch(horizontalDirection) {
 		case LEFT:
@@ -116,7 +121,6 @@ public class EnemyWave implements Cloneable {
 				enemy.setLocation(new Point(enemy.getLocation().x + deltaX, enemy.getLocation().y)); 
 			}
 		}
-		handleDirectionChange();
 	}
 	
 	private void handleDirectionChange() {

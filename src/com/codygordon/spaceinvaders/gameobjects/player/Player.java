@@ -23,6 +23,7 @@ public class Player extends GameObject {
 	private Color color;
 	
 	private boolean canShoot = true;
+	public boolean isAlive = true;
 	
 	public Player() {
 		location = new Point();
@@ -35,6 +36,7 @@ public class Player extends GameObject {
 	
 	@Override
 	public void draw(Graphics g) {
+		if(!isAlive) return;
 		g.setColor(color);
 		g.fillRect(location.x,
 				location.y,
@@ -102,5 +104,13 @@ public class Player extends GameObject {
 	
 	public void setShootDelay(long delay) {
 		this.shootDelay = delay;
+	}
+	
+	public int getWidth() {
+		return collider.width;
+	}
+	
+	public int getHeight() {
+		return collider.height;
 	}
 }
