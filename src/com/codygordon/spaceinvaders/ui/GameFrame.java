@@ -16,17 +16,15 @@ public class GameFrame extends JFrame {
 	
 	public GameFrame() {
 		System.out.println("Creating game frame...");
-		
+		setResizable(false);
 		setTitle("Space Invaders");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 977, 634);
+		setBounds(100, 100, 1000, 650);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
-		
 		addKeyListener(new FrameKeyListener());
-		
 		setVisible(true);
 	}
 	

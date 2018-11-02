@@ -52,6 +52,7 @@ public class GameContainer {
 	}
 	
 	public void startGame() {
+		reset();
 		System.out.println("Starting game...");
 		GameScreen screen = new GameScreen();
 		controller = new GameController(screen);
@@ -62,9 +63,27 @@ public class GameContainer {
 		initLoop();
 	}
 	
+	private void reset() {
+		if(loop != null) {
+			loop.getThread().interrupt();
+		}
+		
+		if(controller != null) {
+			controller.destroy();
+		}
+	}
+	
 	public void createBarriers() { }
 	public void createPlayer() { }
 	public void createEnemyWave() { }
+	
+	public void pauseGameLoop() {
+		loop.running = false;
+	}
+	
+	public void resumeGameLoop() {
+		loop.running = true;
+	}
 	
 	public GameUpdater getUpdater() {
 		return this.updater;

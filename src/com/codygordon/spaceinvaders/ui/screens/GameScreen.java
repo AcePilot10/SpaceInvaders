@@ -3,6 +3,7 @@ package com.codygordon.spaceinvaders.ui.screens;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -24,35 +25,24 @@ public class GameScreen extends JPanel implements GameObserver {
 	private HealthDisplay healthDisplay;
 	
 	public GameScreen() {
-				
+		int width = GameContainer.getInstance().getMainFrame().getWidth();
+
 		System.out.println("Creating game screen...");
 		setBackground(Color.BLACK);
 		setLayout(null);
 		
-		JLabel lblGame = new JLabel("Game");
-		lblGame.setBounds(212, 11, 47, 20);
-		lblGame.setForeground(Color.WHITE);
-		add(lblGame);
-		
 		lblScore = new JLabel("Score: 000");
-		lblScore.setBounds(10, 37, 122, 33);
+		lblScore.setSize(136, 26);
 		lblScore.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblScore.setLocation(new Point(0, 0));
 		lblScore.setForeground(Color.WHITE);
 		lblScore.setFont(new Font("Ariel", Font.PLAIN, 25));
 		add(lblScore);
 	
 		healthDisplay = new HealthDisplay();
 		healthDisplay.setSize(178, 58);
-		int width = GameContainer.getInstance().getMainFrame().getWidth();
 		healthDisplay.setLocation(width - (healthDisplay.getWidth() + 30), 0);
 		add(healthDisplay);
-		
-//		BackgroundImagePanel background = new BackgroundImagePanel();
-//		background.setVisible(true);
-//		background.setSize(GameContainer.getInstance().getMainFrame().getWidth(),
-//						   GameContainer.getInstance().getMainFrame().getHeight());
-//		background.setVisible(true);
-//		add(background);
 				
 		GameContainer.getInstance().getUpdater().registerObserver(this);
 	}

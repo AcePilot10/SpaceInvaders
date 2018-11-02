@@ -2,6 +2,7 @@ package com.codygordon.spaceinvaders.ui.screens;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,8 +19,8 @@ public class HomeScreen extends JPanel {
 
 	public HomeScreen() {
 		System.out.println("Creating home screen...");
-		setBackground(Color.BLACK);
 		setLayout(null);
+		setBackground(Color.BLACK);
 		
 		JLabel lblTitle = new JLabel("Space Invaders");
 		lblTitle.setBounds(311, 0, 293, 52);
@@ -44,5 +45,10 @@ public class HomeScreen extends JPanel {
 	
 	private void playButtonClicked() {
 		GameContainer.getInstance().startGame();
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
 	}
 }

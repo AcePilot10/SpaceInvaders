@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 
-public class Enemy extends GameObject  {
+public class Enemy extends GameObject {
 	
 	public int destroyReward;
 	private boolean isAlive = true;

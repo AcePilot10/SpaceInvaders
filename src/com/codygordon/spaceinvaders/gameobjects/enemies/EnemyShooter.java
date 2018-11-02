@@ -7,15 +7,16 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.security.auth.Destroyable;
+
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.projectiles.EnemyProjectile;
 
-public class EnemyShooter extends Enemy {
+public class EnemyShooter extends Enemy implements Destroyable {
 	
 	private int projectileSpeed = -15;
 	private long shootDelay = 1000;
 	private float shootChance = 0.1f;
-	
 	private Timer shootTimer;
 	
 	@Override
@@ -66,6 +67,11 @@ public class EnemyShooter extends Enemy {
 		int y = getLocation().y + collider.height;
 		projectile.setLocation(new Point(x, y));
 		GameContainer.getInstance().getController().initGameObject(projectile);
+	}
+	
+	@Override
+	public void destroy() {
+		shootTimer.cancel();
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import com.codygordon.spaceinvaders.controllers.GameController;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
 import com.codygordon.spaceinvaders.gameobjects.projectiles.PlayerProjectile;
 
 public class Player extends GameObject {
@@ -32,6 +33,13 @@ public class Player extends GameObject {
 		int height = GameContainer.getInstance().getMainFrame().getHeight();
 		location.y = height - (int)(collider.getHeight() * 2);
 		speed = 5;
+	}
+	
+	@Override
+	public void onCollision(GameObject col) {
+		if(col instanceof Enemy) {
+			//GameContainer.getInstance().getController().endGame();
+		}
 	}
 	
 	@Override

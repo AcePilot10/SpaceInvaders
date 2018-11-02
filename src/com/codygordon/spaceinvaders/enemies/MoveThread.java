@@ -1,12 +1,12 @@
 package com.codygordon.spaceinvaders.enemies;
 
-public class MoveRunnable implements Runnable {
+public class MoveThread extends Thread implements Runnable {
 
 	private IEnemyMove enemyMove;
-	private long delay;
+	public long delay;
 	public boolean running = true;
 	
-	public MoveRunnable(IEnemyMove move, long delay) {
+	public MoveThread(IEnemyMove move, long delay) {
 		this.enemyMove = move;
 		this.delay = delay;
 	}

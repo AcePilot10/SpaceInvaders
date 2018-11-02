@@ -21,34 +21,37 @@ public class GameLoop implements Runnable {
 				double deltaU = 0, deltaF = 0;
 				int frames = 0, ticks = 0;
 				long timer = System.currentTimeMillis();
-			    while (running) {
-
-			        long currentTime = System.nanoTime();
-			        deltaU += (currentTime - initialTime) / timeU;
-			        deltaF += (currentTime - initialTime) / timeF;
-			        initialTime = currentTime;
-
-			        if (deltaU >= 1) {
-			        	tick();
-			            ticks++;
-			            deltaU--;
-			        }
-
-			        if (deltaF >= 1) {
-			        	updateFrames();
-			            frames++;
-			            deltaF--;
-			        }
-
-			        if (System.currentTimeMillis() - timer > 1000) {
-			            if (renderTime) {
-			                System.out.println(String.format("UPS: %s, FPS: %s", ticks, frames));
-			            }
-			            frames = 0;
-			            ticks = 0;
-			            timer += 1000;
-			        }
-			    }	
+			    while (true) {
+			    	
+			    	if(running) {
+				    	
+				        long currentTime = System.nanoTime();
+				        deltaU += (currentTime - initialTime) / timeU;
+				        deltaF += (currentTime - initialTime) / timeF;
+				        initialTime = currentTime;
+	
+				        if (deltaU >= 1) {
+				        	tick();
+				            ticks++;
+				            deltaU--;
+				        }
+	
+				        if (deltaF >= 1) {
+				        	updateFrames();
+				            frames++;
+				            deltaF--;
+				        }
+	
+				        if (System.currentTimeMillis() - timer > 1000) {
+				            if (renderTime) {
+				                System.out.println(String.format("UPS: %s, FPS: %s", ticks, frames));
+				            }
+				            frames = 0;
+				            ticks = 0;
+				            timer += 1000;
+				        }
+				    }	
+				}   
 			}
 		};
 		thread = new Thread(r);

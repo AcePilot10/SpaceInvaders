@@ -2,17 +2,26 @@ package com.codygordon.spaceinvaders.controllers;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.security.auth.Destroyable;
 
 import com.codygordon.spaceinvaders.enemies.EnemyWave;
 import com.codygordon.spaceinvaders.game.GameContainer;
 import com.codygordon.spaceinvaders.gameobjects.GameObject;
 import com.codygordon.spaceinvaders.gameobjects.barriers.Barrier;
+import com.codygordon.spaceinvaders.gameobjects.enemies.Enemy;
+import com.codygordon.spaceinvaders.gameobjects.enemies.EnemyShooter;
 import com.codygordon.spaceinvaders.gameobjects.player.Player;
 import com.codygordon.spaceinvaders.input.FrameKeyListener;
 import com.codygordon.spaceinvaders.input.GameKeyListener;
+import com.codygordon.spaceinvaders.ui.screens.EndScreen;
 import com.codygordon.spaceinvaders.ui.screens.GameScreen;
 
-public class GameController {
+public class GameController implements Destroyable {
+	
+	private static final long RESPAWN_DELAY = 2500;
 	
 	private Player player;
 	private GameScreen view;
@@ -103,18 +112,43 @@ public class GameController {
 		}
 	}
 	
-	private void endGame() {
-		//TODO
+	public void endGame() {
 		System.out.println("Game Over!");
+		GameContainer.getInstance().getMainFrame().showScreen(new EndScreen(currentScore));
 	}
 	
 	private void respawnPlayer() {
+		pauseGameDelay(RESPAWN_DELAY);
 		int x = GameContainer.getInstance().getMainFrame().getWidth() / 2 - player.getWidth() / 2;
 		int y = GameContainer.getInstance().getMainFrame().getHeight() - player.getHeight() * 2;
 		player.setLocation(new Point(x, y));
+	}
+	
+	private void pauseGameDelay(long delay) {
+		GameContainer.getInstance().pauseGameLoop();
 		try {
-			 Thread.sleep(3000);
-			 player.isAlive = true;
+			new Timer().schedule(new TimerTask() {
+				@Override
+				public void run() {
+					GameContainer.getInstance().resumeGameLoop();
+					player.isAlive = true;
+				}
+			}, delay);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void destroy() {
+		try {
+			for(Enemy enemy : getCurrentEnemyWave().getEnemies()) {
+				if(enemy instanceof EnemyShooter) {
+					((EnemyShooter)enemy).destroy();
+				}
+			}
+			getCurrentEnemyWave().getMoveHorizontalThread().interrupt();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

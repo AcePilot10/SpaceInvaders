@@ -1,6 +1,7 @@
 package com.codygordon.spaceinvaders.enemies;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import com.codygordon.spaceinvaders.controllers.GameController;
 import com.codygordon.spaceinvaders.game.GameContainer;
@@ -14,13 +15,14 @@ public class EnemyWave implements Cloneable {
 	
 	private int xPadding;
 	private int yPadding;
-	private long moveHorizontalDelay;
+	private long baseMoveHorizontalDelay;
+	private long currentMoveHorizontalDelay;
 	private int rows;
 	private int enemiesPerRow;
-	private Thread moveHorizontalThread;
+	private MoveThread moveHorizontalThread;
 	private int moveHorizontalDistance;
 	private int horizontalDirection = RIGHT;
-	private MoveRunnable moveRunnable;
+	private double speedIncreasePerKill;
 	
 	private Enemy[][] enemies;
 	public Enemy[] enemyPreset;
@@ -48,6 +50,7 @@ public class EnemyWave implements Cloneable {
 	}
 
 	public void enemyKilled() {
+		increaseSpeed();
 		if(allEnemiesAreDead()) {
 			GameContainer.getInstance().getController().spawnNextWave();
 		}
@@ -62,10 +65,22 @@ public class EnemyWave implements Cloneable {
 	}
 	
 	public void stop() {
-		moveRunnable.running = false;
+		moveHorizontalThread.running = false;
+	}
+	
+	private void increaseSpeed() {
+		double factor = (baseMoveHorizontalDelay * speedIncreasePerKill) - baseMoveHorizontalDelay;
+		long newSpeed = Math.round(currentMoveHorizontalDelay - factor);
+		if(newSpeed <= 0) {
+			newSpeed = 500;
+		}
+		currentMoveHorizontalDelay = newSpeed;
+		moveHorizontalThread.delay = currentMoveHorizontalDelay;
+		System.out.println("New horizontal move delay: " + currentMoveHorizontalDelay);
 	}
 	
 	private void createEnemies() {
+		this.currentMoveHorizontalDelay = baseMoveHorizontalDelay;
 		int startingX = xPadding * rows * 2;
 		for(int row = 1; row <= rows; row++) {
 			Enemy enemyToClone = enemyPreset[row - 1];
@@ -94,8 +109,7 @@ public class EnemyWave implements Cloneable {
 				moveHorizontal();
 			}
 		};
-		moveRunnable = new MoveRunnable(move, moveHorizontalDelay);
-		moveHorizontalThread = new Thread(moveRunnable);
+		moveHorizontalThread = new MoveThread(move, currentMoveHorizontalDelay);
 		moveHorizontalThread.setName("Move Horizontal Thread");
 		moveHorizontalThread.start();
 	}
@@ -182,6 +196,17 @@ public class EnemyWave implements Cloneable {
 		return true;
 	}
 	
+	public ArrayList<Enemy> getEnemies() {
+		ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < enemiesPerRow; col++) {
+				Enemy enemy = enemies[row][col];
+				enemyList.add(enemy);
+			}
+		}
+		return enemyList;
+	}
+	
 	public int getRows() {
 		return this.rows;
 	}
@@ -199,7 +224,7 @@ public class EnemyWave implements Cloneable {
 	}
 
 	public void setHorizontalDelay(long delay) {
-		this.moveHorizontalDelay = delay;
+		this.baseMoveHorizontalDelay = delay;
 	}
 	
 	public int getMoveHorizontalDistance() {
@@ -208,5 +233,17 @@ public class EnemyWave implements Cloneable {
 	
 	public void setMoveHorizontalDistance(int distance) {
 		this.moveHorizontalDistance = distance;
+	}
+	
+	public double getSpeedIncreasePerKill() {
+		return this.speedIncreasePerKill;
+	}
+	
+	public void setSpeedIncreasePerKill(double value) {
+		this.speedIncreasePerKill = value;
+	}
+	
+	public Thread getMoveHorizontalThread() {
+		return this.moveHorizontalThread;
 	}
 }

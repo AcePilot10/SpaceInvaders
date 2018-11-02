@@ -65,11 +65,11 @@ public class SpaceInvaders extends GameContainer {
 		enemy2.setWidth(35);
 		enemy2.setHeight(35);
 		
-		enemy1.setShootDelay(2000);
-		enemy2.setShootDelay(2000);
+		enemy1.setShootDelay(1000);
+		enemy2.setShootDelay(1000);
 		
-		enemy1.setShootChance(25f);
-		enemy2.setShootChance(25f);
+		enemy1.setShootChance(5f);
+		enemy2.setShootChance(5f);
 		
 		enemy1.setProjectileSpeed(5);
 		enemy2.setProjectileSpeed(5);
@@ -81,6 +81,7 @@ public class SpaceInvaders extends GameContainer {
 						.setYPadding(50)
 						.setMoveHorizontalDistance(50)
 						.setMoveHorizontalDelay(2000)
+						.setSpeedIncreasePerKill(1.05)
 						.createEnemyPreset(enemy1)
 						.createEnemyPreset(enemy2)
 						.build();
